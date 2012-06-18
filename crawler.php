@@ -69,6 +69,7 @@ function getStore($uri) {
 		case 'rdf.freebase.com':
 			$config = array(
 					/* db */
+					'db_host' => 'localhost',
 					'db_name' => 'mi8',
 					'db_user' => 'root',
 					'db_pwd' => '',
@@ -95,6 +96,7 @@ function getStore($uri) {
 		case 'www.bbc.co.uk':
 			$config = array(
 					/* db */
+					'db_host' => '127.0.0.1',
 					'db_name' => 'mi8',
 					'db_user' => 'root',
 					'db_pwd' => '',
