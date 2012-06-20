@@ -29,7 +29,7 @@ function fetchSameAs($uri)
 }
 
 
-function fetchAll($uri)
+function fetchAll($uri, $bc_store)
 {
 	/* Pre- and Postfix */
 	$q_pre = '
@@ -39,12 +39,14 @@ function fetchAll($uri)
 	$q_post = ' }
 	';
 
-	$q = $q_pre . "<" . $uri . "> ?p ?o" . $q_post;
+	$q = $q_pre . " ?s ?p ?o . <" . $uri . "> ?p ?o" . $q_post;
 
 	$store = getStore($uri);
 
 	if (!is_null($store)) {
 		$rows = $store->query($q, 'rows');
+		//$rawdata = $store->query(, 'raw');
+		$bc_store->insert($rows, 'bandclash.example.com');
 		return $rows;	
 	}
 	return;
@@ -69,6 +71,7 @@ function getStore($uri) {
 		case 'rdf.freebase.com':
 			$config = array(
 					/* db */
+					'db_host' => 'localhost',
 					'db_name' => 'mi8',
 					'db_user' => 'root',
 					'db_pwd' => '',
@@ -95,6 +98,7 @@ function getStore($uri) {
 		case 'www.bbc.co.uk':
 			$config = array(
 					/* db */
+					'db_host' => '127.0.0.1',
 					'db_name' => 'mi8',
 					'db_user' => 'root',
 					'db_pwd' => '',
@@ -167,18 +171,38 @@ function requestURIs($uri, $fringe, $i) {
 $fringe = requestURIs($startpoint, $fringe, 0);
 //var_dump($fringe);
 
+$bc_config = array(
+					/* db */
+					'db_host' => 'localhost',
+					'db_name' => 'mi8',
+					'db_user' => 'root',
+					'db_pwd' => '',
+					/* store */
+					'store_name' => 'arc_bc',
+					/* stop after 100 errors */
+					'max_errors' => 100
+					);
+$bc_store = ARC2::getStore($bc_config);
+if (!$bc_store->isSetUp()) $bc_store->setUp();
+			
+/* Reset the store */
+$bc_store->reset();
+
 $triples = array();
 foreach ($fringe as $uri) {
-	$storeTriples = fetchAll($uri);
+	//fetchAll($uri,$bc_store);
+
+	$storeTriples = fetchAll($uri,$bc_store);
 	if (is_array($storeTriples)) {
 		$triples = array_merge($triples, $storeTriples);	
 	}
 }
+//$triples = $bc_store->query('SELECT *', 'rows');
 
-//var_dump($triples);
+var_dump($triples);
 
 
-if (TRUE) {//$fringe) {
+if (FALSE) {//$fringe) {
 	$r = '<table border="1" rules="all">';
 	foreach ($triples as $row) {
 		$r .= '<tr>';
@@ -189,9 +213,5 @@ if (TRUE) {//$fringe) {
 	}
 	$r .= '</table>';
 }
-//$r = TRUE;
 
-echo $r ? $r : 'no objects found';
-
-		//echo var_dump($rows);*/
 ?>
