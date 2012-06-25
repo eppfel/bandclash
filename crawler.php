@@ -19,20 +19,25 @@ final class Crawler extends DBHelper
 		$fringe = $this->fetchSameAs($uri);
 
 		//Aggregation (temporary request All where URI is subject)
-		$triples = array();
-		foreach ($fringe as $uri) {
-
-			$storeTriples = $this->fetchAll($uri);
-			if (is_array($storeTriples)) {
-				$triples = array_merge($triples, $storeTriples);	
+		if (count($fringe) > 1)
+		{
+			$triples = array();
+			foreach ($fringe as $uri)
+			{
+				$storeTriples = $this->fetchAll($uri);
+				if (is_array($storeTriples)) {
+					$triples = array_merge($triples, $storeTriples);	
+				}
+			}
+	
+			//insert everthing into db
+			if (count($triples) > 1)
+			{
+				$bc_store = $this->_getLocalStore('arc_bc');
+				$bc_store->reset();
+				$bc_store->insert($triples, 'bandclash.example.com');
 			}
 		}
-
-		//insert everthing into db
-		$bc_store = $this->_getLocalStore('arc_bc');
-		$bc_store->reset();
-		$bc_store->insert($triples, 'bandclash.example.com');
-
 		return $triples; 
 	}
 
@@ -40,7 +45,7 @@ final class Crawler extends DBHelper
 		//Notice
 		if (FALSE)
 		{
-			Throw new Notice("dump: " . $uri . ": " . $domain . "\n");
+			Throw new Error("dump: " . $uri . ": " . $domain . "\n");
 		}
 		
 		//switch method by host
