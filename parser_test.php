@@ -9,7 +9,17 @@
 <?php
 require_once('parser.php');
 $bcp = new BCParser("http://chartarchive.org/a/");
-$bcp->getChartsByArtist("the+rolling+stones");
+$triples = $bcp->getChartsByArtist("the+rolling+stones");
+foreach($triples as $key => $value)
+{
+	echo $key." : ";
+	foreach($value as $value)
+	{
+		echo $value;	
+	}
+	echo "<br />";	
+}
+
 ?>
 </body>
 </html>
