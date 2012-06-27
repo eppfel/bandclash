@@ -29,14 +29,6 @@ final class Crawler extends DBHelper
 					$triples = array_merge($triples, $storeTriples);	
 				}
 			}
-	
-			//insert everthing into db
-			if (count($triples) > 1)
-			{
-				$bc_store = $this->_getLocalStore('arc_bc');
-				$bc_store->reset();
-				$bc_store->insert($triples, 'bandclash.example.com');
-			}
 		}
 		return $triples; 
 	}

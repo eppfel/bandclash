@@ -12,6 +12,10 @@ $(document).ready(function(){
    		$.get('server.php?action=print', printResponse);
 	});
 
+	$('#resetbtn').click(function(){
+   		$.get('server.php?action=reset', printResponse);
+	});
+
 	//lacks url encoding to use bbc with '#' sign
    	$('#crawlbtn').click(function(){
    		var uri
@@ -21,8 +25,17 @@ $(document).ready(function(){
    		else {
 			uri = $('select[name=uri] option:selected').val();
    		};
-   		$.get('server.php?action=crawl&uri='+uri, printResponse);
+   		uri = encodeURI(uri);
+   		$.post('server.php', { action: "crawl", uri: uri }, printResponse);
+   		console.log(uri);
+
 	});
+
+	$("#output").bind("ajaxSend", function() {
+   		$(this).html('').addClass('ajax-loading');
+ 	}).bind("ajaxComplete", function(){
+   		$(this).removeClass('ajax-loading');
+ 	});
 
  });
 

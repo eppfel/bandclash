@@ -10,7 +10,7 @@ abstract class DBHelper
 	
 	function __construct()
 	{
-		//empty
+		//nothing
 	}
 
 	//Local Store for Content Negotiation

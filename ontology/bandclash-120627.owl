@@ -1,0 +1,272 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE Ontology [
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY xml "http://www.w3.org/XML/1998/namespace" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.bandclash.net"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     ontologyIRI="http://www.bandclash.net">
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Declaration>
+        <Class IRI="http://dbpedia.org/onthology/Band"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://dbpedia.org/onthology/MusicalWork"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://dbpedia.org/onthology/Organisation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://dbpedia.org/onthology/Work"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Album"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#BackgroundVocals"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Band"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#BandMember"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Bassist"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Cover"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Drummer"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Event"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Gig"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Guitarist"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Keyboarder"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#LeadGuitarist"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#LeadSinger"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Lyrics"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MusicArtist"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MusicalWork"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Organist"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Pianist"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Remix"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#RithmGuitarist"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Singer"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Single"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Song"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Tour"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasBand"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasBandMember"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasCover"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasLyrics"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasMusicArtist"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasMusicalWork"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasOriginalSong"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasRemix"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasSong"/>
+    </Declaration>
+    <SubClassOf>
+        <Class IRI="http://dbpedia.org/onthology/Band"/>
+        <Class IRI="http://dbpedia.org/onthology/Organisation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://dbpedia.org/onthology/MusicalWork"/>
+        <Class IRI="http://dbpedia.org/onthology/Work"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://dbpedia.org/onthology/Organisation"/>
+        <Class abbreviatedIRI=":Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Album"/>
+        <Class IRI="#MusicalWork"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#BackgroundVocals"/>
+        <Class IRI="#Singer"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Band"/>
+        <Class IRI="#MusicArtist"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#BandMember"/>
+        <Class IRI="#MusicArtist"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Bassist"/>
+        <Class IRI="#BandMember"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Cover"/>
+        <Class IRI="#MusicalWork"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Drummer"/>
+        <Class IRI="#BandMember"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Gig"/>
+        <Class IRI="#Event"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Guitarist"/>
+        <Class IRI="#BandMember"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Keyboarder"/>
+        <Class IRI="#BandMember"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#LeadGuitarist"/>
+        <Class IRI="#Guitarist"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#LeadSinger"/>
+        <Class IRI="#Singer"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Lyrics"/>
+        <Class IRI="#MusicalWork"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Organist"/>
+        <Class IRI="#Keyboarder"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Pianist"/>
+        <Class IRI="#Keyboarder"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Remix"/>
+        <Class IRI="#MusicalWork"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#RithmGuitarist"/>
+        <Class IRI="#Guitarist"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Singer"/>
+        <Class IRI="#BandMember"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Single"/>
+        <Class IRI="#MusicalWork"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Song"/>
+        <Class IRI="#MusicalWork"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Tour"/>
+        <Class IRI="#Event"/>
+    </SubClassOf>
+    <DisjointClasses>
+        <Class IRI="#BackgroundVocals"/>
+        <Class IRI="#LeadSinger"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Band"/>
+        <Class IRI="#BandMember"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Gig"/>
+        <Class IRI="#Tour"/>
+    </DisjointClasses>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#hasMusicalWork"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#hasBand"/>
+        <ObjectProperty IRI="#hasBandMember"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#hasCover"/>
+        <ObjectProperty IRI="#hasOriginalSong"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#hasSong"/>
+        <ObjectProperty IRI="#hasLyrics"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#hasMusicArtist"/>
+        <ObjectProperty IRI="#hasMusicalWork"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#hasRemix"/>
+        <ObjectProperty IRI="#hasOriginalSong"/>
+    </InverseObjectProperties>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 3.2.3.1824) http://owlapi.sourceforge.net -->
+

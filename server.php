@@ -29,6 +29,7 @@ class BCAjaxServer extends DBHelper
 		if(isset($_REQUEST['action']))
 		{
 			switch ($_REQUEST['action']) {
+
 				case 'crawl':
 					if (isset($_REQUEST['uri'])) {
 						$uri = $_REQUEST['uri'];
@@ -37,8 +38,17 @@ class BCAjaxServer extends DBHelper
 						$uri = $this->_startpoint;
 					}
 					$crawler = new Crawler();
-					$triple = $crawler->crawl($uri);
-					echo "Succesfully crawled " . count($triple) . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
+					$triples = $crawler->crawl($uri);
+
+					$n = count($triples);
+					if ($n) {//insert everthing into db
+						//$this->_store->reset(); //just if every crawl should start by 0
+						$this->_store->insert($triples, 'bandclash.net');
+						echo "Succesfully crawled " . $n . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
+					}
+					else {
+						echo "Sadly nothing got crawled from &lt;" . $uri . "&gt;." . PHP_EOL;
+					}
 					break;
 				
 				case 'export':
@@ -53,20 +63,36 @@ class BCAjaxServer extends DBHelper
 						echo $doc;	
 					}
 					break;
+				
+				//reset and show result
+				case 'reset':
+					//empty store
+					$this->_store->reset();
 
 				// print all data in a table view
 				default:
 					$triples = $this->_fetchAll();
-					$r = '<table border="1" rules="all">';
-					foreach ($triples as $row) {
-						$r .= '<tr>';
-						$r .= '<td>' . $row['s'] . '</td>';
-						$r .= '<td>' . $row['p'] . '</td>';
-						$r .= '<td>' . $row['o'] . '</td>';
-						$r .= '</tr>';
+					$n = count($triples);
+					if ($n) {
+						$r = '<p>The db contains ' . $n . ' Triples.</p>' . PHP_EOL;
+						$r .= '<table class="table table-striped table-condensed">' . PHP_EOL;
+						$r .= '<thead><tr><th>s</th><<th>p</th><th>o</th></tr></thead>' . PHP_EOL;
+						$r .= '<tbody>' . PHP_EOL;
+						foreach ($triples as $row) {
+							$r .= '<tr>';
+							$r .= '<td>' . $row['s'] . '</td>';
+							$r .= '<td>' . $row['p'] . '</td>';
+							$r .= '<td>' . $row['o'] . '</td>';
+							$r .= '</tr>' . PHP_EOL;
+						}
+						$r .= '</tbody>' . PHP_EOL;
+						$r .= '</table>';
+						echo $r;
 					}
-					$r .= '</table>';
-					echo $r;
+					else
+					{
+						echo "Local store is empty!" . PHP_EOL;
+					}
 					break;
 			}
 		}

@@ -4,8 +4,13 @@
    Author: Felix Epp
    ========================================================================== */
 
-div#output td, div#output th {
+div#outputs td, div#outputs th {
 	word-wrap: break-word;
+}
+
+.ajax-loading {
+	height: 32px;
+	background: transparent url(../img/ajax-loader.gif) no-repeat;
 }
 
 
