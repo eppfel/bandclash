@@ -12,6 +12,7 @@ class BCParser extends DBHelper
 	private $_rowCounter;
 	private $_triples = array();
 	private $_datacounter;
+	private $_artistname;
 	
 	public function __construct($baseURI, $subPath)
 	{
@@ -19,6 +20,44 @@ class BCParser extends DBHelper
 		$this->_subPath = $subPath;
 		$this->_rowCounter = 0;
 		$this->_datacounter = 0;
+		$this->_artistname = "";
+	}
+	
+	
+	private function _getSubjectFromDbPedia($releasename)
+	{
+		/**To Do:
+			Get URI for Release from dbPedia
+		**/
+		
+		$uri = $releasename;
+		/*array_push($fringe, $uri);
+
+		if ($depth > 0)
+		{
+			//echo "URI: " . $uri . " , Depth: " . $depth . PHP_EOL;
+			/* Query */
+			/*
+			$q = '
+			PREFIX owl: <http://www.w3.org/2002/07/owl#>
+			SELECT ?o
+			WHERE { <'.$uri.'> owl:sameAs ?o . }';
+		
+			$store = $this->_getStore($uri);
+		
+			if (!is_null($store)) {
+				if ($rows = $store->query($q, 'rows')) {
+					foreach ($rows as $row) {
+						if (!in_array($row['o'], $fringe)) {
+							$fringe = $this->fetchSameAs($row['o'], $depth-1, $fringe);
+						}
+					}
+				}
+			}
+		}
+		*/
+		
+		return $uri;
 	}
 
 	public function getChartsByArtist ($artistName)
@@ -53,7 +92,7 @@ class BCParser extends DBHelper
 						{
 							$src = $img->src;
 							$this->_triples[$this->_rowCounter][] = "release";
-							$this->_triples[$this->_rowCounter][] = "hasCover";
+							$this->_triples[$this->_rowCounter][] = "foaf:depitction";
 							$this->_triples[$this->_rowCounter][] = "<img src=\"".$this->_baseURI.str_replace("-100", "-raw", $src)."\" />";
 						}
 						
@@ -65,22 +104,22 @@ class BCParser extends DBHelper
 					break;	
 					case 2:
 						$this->_triples[$this->_rowCounter][] = "release";
-						$this->_triples[$this->_rowCounter][] = "firstCharted";
+						$this->_triples[$this->_rowCounter][] = "http://www.bandclash.net/onthology#firstCharted";
 						$this->_triples[$this->_rowCounter][] = $element->plaintext;
 					break;	
 					case 3:
 						$this->_triples[$this->_rowCounter][] = "release";
-						$this->_triples[$this->_rowCounter][] = "lastCharted";
+						$this->_triples[$this->_rowCounter][] = "http://www.bandclash.net/onthology#lastCharted";
 						$this->_triples[$this->_rowCounter][] = $element->plaintext;
 					break;	
 					case 4:
 						$this->_triples[$this->_rowCounter][] = "release";
-						$this->_triples[$this->_rowCounter][] = "appearance";
+						$this->_triples[$this->_rowCounter][] = "http://www.bandclash.net/onthology#chartAppearances";
 						$this->_triples[$this->_rowCounter][] = $element->plaintext;
 					break;	
 					case 5:
 						$this->_triples[$this->_rowCounter][] = "release";
-						$this->_triples[$this->_rowCounter][] = "peak";
+						$this->_triples[$this->_rowCounter][] = "http://www.bandclash.net/onthology#chartPeak";
 						$this->_triples[$this->_rowCounter][] = $element->plaintext;
 					break;	
 				}
