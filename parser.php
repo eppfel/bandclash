@@ -8,23 +8,29 @@ require_once('shdp/simple_html_dom.php');
 class BCParser extends DBHelper
 {
 	private $_baseURI;
+	private $_subPath;
 	private $_rowCounter;
 	private $_triples = array();
 	private $_datacounter;
 	
-	public function __construct($baseURI)
+	public function __construct($baseURI, $subPath)
 	{
 		$this->_baseURI = $baseURI;
+		$this->_subPath = $subPath;
 		$this->_rowCounter = 0;
 		$this->_datacounter = 0;
 	}
 
 	public function getChartsByArtist ($artistName)
 	{
-		$uri = $this->_baseURI.$artistName;
+		$fixedArtistName = str_replace(" ", "+", $artistName);
+		$uri = $this->_baseURI.$this->_subPath.$fixedArtistName;
 		// parse a Site
 		// Create DOM from URL or file
 		$html = file_get_html($uri);
+		//TODO: Tabellen in Singles und Albums unterteilen
+		//foreach($html->find('tr') as $tablerow) 
+		
 		
 		// Find all trs 
 		foreach($html->find('tr') as $tablerow) 
@@ -32,7 +38,7 @@ class BCParser extends DBHelper
 			
 		   foreach($tablerow->find('td') as $element)
 		   {
-			   
+			
 			   #funktioniert soweit
 				//echo $element->plaintext." <br />";
 				
@@ -43,38 +49,46 @@ class BCParser extends DBHelper
 				switch($this->_datacounter)
 				{
 					case 0:
-						$this->_triples[$this->_rowCounter][0] = "release";
-						$this->_triples[$this->_rowCounter][1] = "hasTitle";
-						$this->_triples[$this->_rowCounter][2] = $element->plaintext;
-					break;	
+						foreach($element->find('img') as $img)
+						{
+							$src = $img->src;
+							$this->_triples[$this->_rowCounter][] = "release";
+							$this->_triples[$this->_rowCounter][] = "hasCover";
+							$this->_triples[$this->_rowCounter][] = "<img src=\"".$this->_baseURI.str_replace("-100", "-raw", $src)."\" />";
+						}
+						
+					break;
 					case 1:
-						$this->_triples[$this->_rowCounter][0] = "release";
-						$this->_triples[$this->_rowCounter][1] = "firstCharted";
-						$this->_triples[$this->_rowCounter][2] = $element->plaintext;
+						$this->_triples[$this->_rowCounter][] = "release";
+						$this->_triples[$this->_rowCounter][] = "http://www.w3.org/2000/01/rdf-schema#label";
+						$this->_triples[$this->_rowCounter][] = $element->plaintext;
 					break;	
 					case 2:
-						$this->_triples[$this->_rowCounter][0] = "release";
-						$this->_triples[$this->_rowCounter][1] = "lastCharted";
-						$this->_triples[$this->_rowCounter][2] = $element->plaintext;
+						$this->_triples[$this->_rowCounter][] = "release";
+						$this->_triples[$this->_rowCounter][] = "firstCharted";
+						$this->_triples[$this->_rowCounter][] = $element->plaintext;
 					break;	
 					case 3:
-						$this->_triples[$this->_rowCounter][0] = "release";
-						$this->_triples[$this->_rowCounter][1] = "appearance";
-						$this->_triples[$this->_rowCounter][2] = $element->plaintext;
+						$this->_triples[$this->_rowCounter][] = "release";
+						$this->_triples[$this->_rowCounter][] = "lastCharted";
+						$this->_triples[$this->_rowCounter][] = $element->plaintext;
 					break;	
 					case 4:
-						$this->_triples[$this->_rowCounter][0] = "release";
-						$this->_triples[$this->_rowCounter][1] = "peak";
-						$this->_triples[$this->_rowCounter][2] = $element->plaintext;
+						$this->_triples[$this->_rowCounter][] = "release";
+						$this->_triples[$this->_rowCounter][] = "appearance";
+						$this->_triples[$this->_rowCounter][] = $element->plaintext;
+					break;	
+					case 5:
+						$this->_triples[$this->_rowCounter][] = "release";
+						$this->_triples[$this->_rowCounter][] = "peak";
+						$this->_triples[$this->_rowCounter][] = $element->plaintext;
 					break;	
 				}
-				if($this->_datacounter<=4)
-				{
-				$this->_datacounter++;
-				}else{
-				$this->_datacounter=0;	
-				}
+					//echo $this->_datacounter;
+					$this->_datacounter++;	
+				
 		   }
+		   $this->_datacounter = 0;
 		   $this->_rowCounter++;
 		}
 		
