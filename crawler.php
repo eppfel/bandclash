@@ -49,7 +49,7 @@ final class Crawler extends DBHelper
 				$store->reset();
 				
 				//$uri = substr_replace($uri,'.',strripos($uri,'/'),1);
-				echo "LOAD: " . $uri . "<br />\n";
+				//echo "LOAD: " . $uri . "<br />\n";
 				$store->query("LOAD <" . $uri . ">");
 				
 				return $store;
