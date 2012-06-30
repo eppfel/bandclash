@@ -40,11 +40,19 @@ class BCAjaxServer extends DBHelper
 					$crawler = new Crawler();
 					$triples = $crawler->crawl($uri);
 
+					//insert everthing into db
 					$n = count($triples);
-					if ($n) {//insert everthing into db
+					if ($n) {
 						//$this->_store->reset(); //just if every crawl should start by 0
 						$this->_store->insert($triples, 'bandclash.net');
-						echo "Succesfully crawled " . $n . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
+						if ($errs = $this->_store->getErrors()) {
+							echo "Problems in Insert of aggregated triples: " . var_export($errs, true) . PHP_EOL;
+							var_dump($triples);
+						}
+						else {
+							echo "Succesfully crawled " . $n . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
+							echo "These Sources were not crawled: " . $crawler->getUnhandledURIs . PHP_EOL;
+						}
 					}
 					else {
 						echo "Sadly nothing got crawled from &lt;" . $uri . "&gt;." . PHP_EOL;

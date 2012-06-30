@@ -119,6 +119,10 @@ final class Crawler extends DBHelper
 						if (!in_array($row['o'], $fringe)) {
 							$fringe = $this->fetchSameAs($row['o'], $depth-1, $fringe);
 						}
+						else
+						{
+							echo "sameAs doubled";
+						}
 					}
 				}
 			}
@@ -154,7 +158,7 @@ final class Crawler extends DBHelper
 
 	public function getUnhandledURIs()
 	{
-
+		return var_export($this->_unhandledURIs, true);
 	}
 }
 
