@@ -83,7 +83,7 @@ class BCAjaxServer extends DBHelper
 					$n = count($triples);
 					if ($n) {
 						$r = '<p>The db contains ' . $n . ' Triples.</p>' . PHP_EOL;
-						$r .= '<table class="table table-striped table-condensed">' . PHP_EOL;
+						$r .= '<table class="table table-striped table-condensed tfixed">' . PHP_EOL;
 						$r .= '<thead><tr><th>s</th><th>p</th><th>o</th></tr></thead>' . PHP_EOL;
 						$r .= '<tbody>' . PHP_EOL;
 						foreach ($triples as $row) {

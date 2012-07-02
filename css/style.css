@@ -12,7 +12,10 @@ div#outputs td, div#outputs th {
 	height: 32px;
 	background: transparent url(../img/ajax-loader.gif) no-repeat;
 }
-
+.tfixed{
+	table-layout:fixed;
+	word-wrap:break-word;	
+}
 
 
 
