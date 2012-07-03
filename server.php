@@ -1,4 +1,8 @@
 <?php
+//Force UTF-8 for international triples
+header( 'Content-Type: text/html; charset=UTF-8' );
+
+require_once('utf8helper.php');
 require_once('crawler.php');
 require_once('dbhelper.php');
 
@@ -39,6 +43,7 @@ class BCAjaxServer extends DBHelper
 					}
 					$crawler = new Crawler();
 					$triples = $crawler->crawl($uri);
+					var_dump($triples);
 
 					//insert everthing into db
 					$n = count($triples);
@@ -90,7 +95,7 @@ class BCAjaxServer extends DBHelper
 							$r .= '<tr>';
 							$r .= '<td>' . $row['s'] . '</td>';
 							$r .= '<td>' . $row['p'] . '</td>';
-							$r .= '<td>' . $row['o'] . '</td>';
+							$r .= '<td>' . fixUtf8($row['o']) . '</td>';
 							$r .= '</tr>' . PHP_EOL;
 						}
 						$r .= '</tbody>' . PHP_EOL;
