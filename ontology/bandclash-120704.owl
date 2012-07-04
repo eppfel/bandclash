@@ -37,61 +37,19 @@
         <Class IRI="http://www.bandclash.net#Album"/>
     </Declaration>
     <Declaration>
-        <Class IRI="http://www.bandclash.net#BackgroundVocals"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://www.bandclash.net#Band"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://www.bandclash.net#BandMember"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://www.bandclash.net#Bassist"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="http://www.bandclash.net#Cover"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://www.bandclash.net#Drummer"/>
     </Declaration>
     <Declaration>
         <Class IRI="http://www.bandclash.net#Gig"/>
     </Declaration>
     <Declaration>
-        <Class IRI="http://www.bandclash.net#Guitarist"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://www.bandclash.net#Keyboarder"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://www.bandclash.net#LeadGuitarist"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://www.bandclash.net#LeadSinger"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="http://www.bandclash.net#Lyrics"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://www.bandclash.net#MusicArtist"/>
     </Declaration>
     <Declaration>
         <Class IRI="http://www.bandclash.net#MusicalWork"/>
     </Declaration>
     <Declaration>
-        <Class IRI="http://www.bandclash.net#Organist"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://www.bandclash.net#Pianist"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="http://www.bandclash.net#Remix"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://www.bandclash.net#RithmGuitarist"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://www.bandclash.net#Singer"/>
     </Declaration>
     <Declaration>
         <Class IRI="http://www.bandclash.net#Single"/>
@@ -197,72 +155,20 @@
         <Class IRI="http://www.bandclash.net#MusicalWork"/>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="http://www.bandclash.net#BackgroundVocals"/>
-        <Class IRI="http://www.bandclash.net#Singer"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://www.bandclash.net#Band"/>
-        <Class IRI="http://www.bandclash.net#MusicArtist"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://www.bandclash.net#BandMember"/>
-        <Class IRI="http://www.bandclash.net#MusicArtist"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://www.bandclash.net#Bassist"/>
-        <Class IRI="http://www.bandclash.net#BandMember"/>
-    </SubClassOf>
-    <SubClassOf>
         <Class IRI="http://www.bandclash.net#Cover"/>
         <Class IRI="http://www.bandclash.net#MusicalWork"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://www.bandclash.net#Drummer"/>
-        <Class IRI="http://www.bandclash.net#BandMember"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="http://www.bandclash.net#Gig"/>
         <Class IRI="http://dbpedia.org/ontology/Event"/>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="http://www.bandclash.net#Guitarist"/>
-        <Class IRI="http://www.bandclash.net#BandMember"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://www.bandclash.net#Keyboarder"/>
-        <Class IRI="http://www.bandclash.net#BandMember"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://www.bandclash.net#LeadGuitarist"/>
-        <Class IRI="http://www.bandclash.net#Guitarist"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://www.bandclash.net#LeadSinger"/>
-        <Class IRI="http://www.bandclash.net#Singer"/>
-    </SubClassOf>
-    <SubClassOf>
         <Class IRI="http://www.bandclash.net#Lyrics"/>
         <Class IRI="http://www.bandclash.net#MusicalWork"/>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="http://www.bandclash.net#Organist"/>
-        <Class IRI="http://www.bandclash.net#Keyboarder"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://www.bandclash.net#Pianist"/>
-        <Class IRI="http://www.bandclash.net#Keyboarder"/>
-    </SubClassOf>
-    <SubClassOf>
         <Class IRI="http://www.bandclash.net#Remix"/>
         <Class IRI="http://www.bandclash.net#MusicalWork"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://www.bandclash.net#RithmGuitarist"/>
-        <Class IRI="http://www.bandclash.net#Guitarist"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://www.bandclash.net#Singer"/>
-        <Class IRI="http://www.bandclash.net#BandMember"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="http://www.bandclash.net#Single"/>
@@ -276,14 +182,6 @@
         <Class IRI="http://www.bandclash.net#Tour"/>
         <Class IRI="http://dbpedia.org/ontology/Event"/>
     </SubClassOf>
-    <DisjointClasses>
-        <Class IRI="http://www.bandclash.net#BackgroundVocals"/>
-        <Class IRI="http://www.bandclash.net#LeadSinger"/>
-    </DisjointClasses>
-    <DisjointClasses>
-        <Class IRI="http://www.bandclash.net#Band"/>
-        <Class IRI="http://www.bandclash.net#BandMember"/>
-    </DisjointClasses>
     <DisjointClasses>
         <Class IRI="http://www.bandclash.net#Gig"/>
         <Class IRI="http://www.bandclash.net#Tour"/>

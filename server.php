@@ -44,7 +44,7 @@ class BCAjaxServer extends DBHelper
 					$n = count($triples);
 					if ($n) {
 						//$this->_store->reset(); //just if every crawl should start by 0
-						$this->_store->insert($triples, 'bandclash.net');
+						$this->_store->insert($triples, 'http://bandclash.net/ontology');
 						if ($errs = $this->_store->getErrors()) {
 							echo "Problems in Insert of aggregated triples: " . var_export($errs, true) . PHP_EOL;
 							var_dump($triples);
