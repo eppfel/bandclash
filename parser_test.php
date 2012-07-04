@@ -11,17 +11,17 @@ require_once('parser.php');
 $artist=$_GET['artist'];
 $bcp = new BCParser("http://chartarchive.org", "/a/");
 $triples = $bcp->getChartsByArtist($artist);
+var_dump($triples);
 //echo $triples;
-foreach($triples as $key => $value)
+/*foreach($triples as $key => $value)
 {
 	echo $key." : ";
 	foreach($value as $value)
 	{
-		
 		echo $value." ";	
 	}
 	echo "<br />";	
-}
+}*/
 
 ?>
 </body>

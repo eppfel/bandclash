@@ -13,6 +13,7 @@ class BCParser extends DBHelper
 	private $_triples = array();
 	private $_datacounter;
 	private $_artistname;
+	private $_releasetype;
 	
 	public function __construct($baseURI, $subPath)
 	{
@@ -21,6 +22,7 @@ class BCParser extends DBHelper
 		$this->_rowCounter = 0;
 		$this->_datacounter = 0;
 		$this->_artistname = "";
+		$this->_releasetype = "";
 	}
 	
 	
@@ -70,69 +72,85 @@ class BCParser extends DBHelper
 		//TODO: Tabellen in Singles und Albums unterteilen
 		//foreach($html->find('tr') as $tablerow) 
 		
-		
-		// Find all trs 
-		foreach($html->find('tr') as $tablerow) 
+		foreach($html->find('table') as $table) 
 		{
-			
-		   foreach($tablerow->find('td') as $element)
-		   {
-			
-			   #funktioniert soweit
-				//echo $element->plaintext." <br />";
+			foreach($html->find('th') as $tablehead)
+			{
+					
+					if($tablehead->plaintext=='Singles')
+					{
+							$this->_releasetype = 'http://www.bandclash.net/onthology#Single'; //Replace by correct URI
+					}
+					if($tablehead->plaintext=='Albums')
+					{
+							$this->_releasetype = 'http://www.bandclash.net/onthology#Album'; //Replace by correct URI
+					}
+					
+			}
+			// Find all trs 
+			foreach($html->find('tr') as $tablerow) 
+			{
 				
+			   foreach($tablerow->find('td') as $element)
+			   {
 				
-				#Funktioniert noch nicht (Denkfehler!)
-				#Triples müssten noch zusammengebaut werden
-				
-				switch($this->_datacounter)
-				{
-					case 0:
-						foreach($element->find('img') as $img)
-						{
-							$src = $img->src;
-							$this->_triples[$this->_rowCounter][] = "release";
-							$this->_triples[$this->_rowCounter][] = "foaf:depitction";
-							$this->_triples[$this->_rowCounter][] = "<img src=\"".$this->_baseURI.str_replace("-100", "-raw", $src)."\" />";
-						}
-						
-					break;
-					case 1:
-						$this->_triples[$this->_rowCounter][] = "release";
-						$this->_triples[$this->_rowCounter][] = "http://www.w3.org/2000/01/rdf-schema#label";
-						$this->_triples[$this->_rowCounter][] = $element->plaintext;
-					break;	
-					case 2:
-						$this->_triples[$this->_rowCounter][] = "release";
-						$this->_triples[$this->_rowCounter][] = "http://www.bandclash.net/onthology#firstCharted";
-						$this->_triples[$this->_rowCounter][] = $element->plaintext;
-					break;	
-					case 3:
-						$this->_triples[$this->_rowCounter][] = "release";
-						$this->_triples[$this->_rowCounter][] = "http://www.bandclash.net/onthology#lastCharted";
-						$this->_triples[$this->_rowCounter][] = $element->plaintext;
-					break;	
-					case 4:
-						$this->_triples[$this->_rowCounter][] = "release";
-						$this->_triples[$this->_rowCounter][] = "http://www.bandclash.net/onthology#chartAppearances";
-						$this->_triples[$this->_rowCounter][] = $element->plaintext;
-					break;	
-					case 5:
-						$this->_triples[$this->_rowCounter][] = "release";
-						$this->_triples[$this->_rowCounter][] = "http://www.bandclash.net/onthology#chartPeak";
-						$this->_triples[$this->_rowCounter][] = $element->plaintext;
-					break;	
-				}
-					//echo $this->_datacounter;
-					$this->_datacounter++;	
-				
-		   }
-		   $this->_datacounter = 0;
-		   $this->_rowCounter++;
+				   #funktioniert soweit
+					//echo $element->plaintext." <br />";
+					
+					
+					#Funktioniert noch nicht (Denkfehler!)
+					#Triples müssten noch zusammengebaut werden
+					
+					switch($this->_datacounter)
+					{
+						case 0:
+							foreach($element->find('img') as $img)
+							{
+								$src = $img->src;
+								$this->_triples[$this->_rowCounter]["p type"] = "uri";
+								$this->_triples[$this->_rowCounter]["p"] = $this->_releasetype;
+								$this->_triples[$this->_rowCounter][] = "foaf:depitction";
+								$this->_triples[$this->_rowCounter][] = $this->_baseURI.str_replace("-100", "-raw", $src);
+							}
+							
+						break;
+						case 1:
+							$this->_triples[$this->_rowCounter][] = $this->_releasetype;
+							$this->_triples[$this->_rowCounter][] = "http://www.w3.org/2000/01/rdf-schema#label";
+							$this->_triples[$this->_rowCounter][] = $element->plaintext;
+						break;	
+						case 2:
+							$this->_triples[$this->_rowCounter][] = $this->_releasetype;
+							$this->_triples[$this->_rowCounter][] = "http://www.bandclash.net/onthology#firstCharted";
+							$this->_triples[$this->_rowCounter][] = $element->plaintext;
+						break;	
+						case 3:
+							$this->_triples[$this->_rowCounter][] = $this->_releasetype;
+							$this->_triples[$this->_rowCounter][] = "http://www.bandclash.net/onthology#lastCharted";
+							$this->_triples[$this->_rowCounter][] = $element->plaintext;
+						break;	
+						case 4:
+							$this->_triples[$this->_rowCounter][] = $this->_releasetype;
+							$this->_triples[$this->_rowCounter][] = "http://www.bandclash.net/onthology#chartAppearances";
+							$this->_triples[$this->_rowCounter][] = $element->plaintext;
+						break;	
+						case 5:
+							$this->_triples[$this->_rowCounter][] = $this->_releasetype;
+							$this->_triples[$this->_rowCounter][] = "http://www.bandclash.net/onthology#chartPeak";
+							$this->_triples[$this->_rowCounter][] = $element->plaintext;
+						break;	
+					}
+						//echo $this->_datacounter;
+						$this->_datacounter++;	
+					
+			   }
+			   $this->_datacounter = 0;
+			   $this->_rowCounter++;
+			}
 		}
 		
-		
 		//return results as _triples
+		
 		
 		return $this->_triples;
 	}
