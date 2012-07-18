@@ -52,7 +52,7 @@ class BCAjaxServer extends DBHelper
 						$this->_store->insert($triples, 'http://bandclash.net/ontology');
 						if ($errs = $this->_store->getErrors()) {
 							echo "Problems in Insert of aggregated triples: " . var_export($errs, true) . PHP_EOL;
-							var_dump($triples);
+							//var_dump($triples);
 						}
 						else {
 							echo "Succesfully crawled " . $n . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;

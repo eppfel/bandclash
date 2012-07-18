@@ -34,61 +34,10 @@
         <Class IRI="http://dbpedia.org/onthology/Work"/>
     </Declaration>
     <Declaration>
-        <Class IRI="http://www.bandclash.net#Album"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://www.bandclash.net#Cover"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="http://www.bandclash.net#Gig"/>
     </Declaration>
     <Declaration>
-        <Class IRI="http://www.bandclash.net#Lyrics"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://www.bandclash.net#MusicalWork"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://www.bandclash.net#Remix"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://www.bandclash.net#Single"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://www.bandclash.net#Song"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="http://www.bandclash.net#Tour"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="http://dbpedia.org/ontology/bandMember"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="http://www.bandclash.net#hasBand"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="http://www.bandclash.net#hasBandMember"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="http://www.bandclash.net#hasCover"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="http://www.bandclash.net#hasLyrics"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="http://www.bandclash.net#hasMusicArtist"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="http://www.bandclash.net#hasMusicalWork"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="http://www.bandclash.net#hasOriginalSong"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="http://www.bandclash.net#hasRemix"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="http://www.bandclash.net#hasSong"/>
     </Declaration>
     <Declaration>
         <DataProperty IRI="#chartAppearances"/>
@@ -151,32 +100,8 @@
         <Class abbreviatedIRI=":Thing"/>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="http://www.bandclash.net#Album"/>
-        <Class IRI="http://www.bandclash.net#MusicalWork"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://www.bandclash.net#Cover"/>
-        <Class IRI="http://www.bandclash.net#MusicalWork"/>
-    </SubClassOf>
-    <SubClassOf>
         <Class IRI="http://www.bandclash.net#Gig"/>
         <Class IRI="http://dbpedia.org/ontology/Event"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://www.bandclash.net#Lyrics"/>
-        <Class IRI="http://www.bandclash.net#MusicalWork"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://www.bandclash.net#Remix"/>
-        <Class IRI="http://www.bandclash.net#MusicalWork"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://www.bandclash.net#Single"/>
-        <Class IRI="http://www.bandclash.net#MusicalWork"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://www.bandclash.net#Song"/>
-        <Class IRI="http://www.bandclash.net#MusicalWork"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="http://www.bandclash.net#Tour"/>
@@ -187,29 +112,241 @@
         <Class IRI="http://www.bandclash.net#Tour"/>
     </DisjointClasses>
     <SubObjectPropertyOf>
-        <ObjectProperty IRI="http://www.bandclash.net#hasMusicalWork"/>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/album"/>
         <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
     </SubObjectPropertyOf>
-    <InverseObjectProperties>
-        <ObjectProperty IRI="http://www.bandclash.net#hasBand"/>
-        <ObjectProperty IRI="http://www.bandclash.net#hasBandMember"/>
-    </InverseObjectProperties>
-    <InverseObjectProperties>
-        <ObjectProperty IRI="http://www.bandclash.net#hasCover"/>
-        <ObjectProperty IRI="http://www.bandclash.net#hasOriginalSong"/>
-    </InverseObjectProperties>
-    <InverseObjectProperties>
-        <ObjectProperty IRI="http://www.bandclash.net#hasSong"/>
-        <ObjectProperty IRI="http://www.bandclash.net#hasLyrics"/>
-    </InverseObjectProperties>
-    <InverseObjectProperties>
-        <ObjectProperty IRI="http://www.bandclash.net#hasMusicArtist"/>
-        <ObjectProperty IRI="http://www.bandclash.net#hasMusicalWork"/>
-    </InverseObjectProperties>
-    <InverseObjectProperties>
-        <ObjectProperty IRI="http://www.bandclash.net#hasRemix"/>
-        <ObjectProperty IRI="http://www.bandclash.net#hasOriginalSong"/>
-    </InverseObjectProperties>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/artist"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/associatedAct"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/associatedBand"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/category"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/domain"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/event"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/genre"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/influenced"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/influencedBy"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/instrument"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/language"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/location"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/locationCity"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/locationCountry"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/lyrics"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/mediaType"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/musicBy"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/musicComposer"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/musicFusionGenre"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/musicSubgenre"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/musicalArtist"/>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/artist"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/musicalBand"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/musicians"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/origin"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/pastMember"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/person"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/place"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/producer"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/publisher"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/related"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/sales"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/thumbnail"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/type"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://dbpedia.org/ontology/writer"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/aSide"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/activeYearsEndDate"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/activeYearsEndYear"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/activeYearsStartDate"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/activeYearsStartYear"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/alias"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/bSide"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/band"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/date"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/endDate"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/endYearOfSales"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/netIncome"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/networth"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/position"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/publicationDate"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/rating"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/recordDate"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/releaseDate"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/review"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/runtime"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/title"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/wikiPageID"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/wikiPageRevisionID"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://dbpedia.org/ontology/Work/runtime"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
 </Ontology>
 
 
