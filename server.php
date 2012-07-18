@@ -63,6 +63,12 @@ class BCAjaxServer extends DBHelper
 						echo "Sadly nothing got crawled from &lt;" . $uri . "&gt;." . PHP_EOL;
 					}
 					break;
+
+				//reset and show result
+				case 'reset':
+					//empty store
+					$this->_store->reset();
+					break;
 				
 				case 'export':
 					//query store
@@ -76,11 +82,16 @@ class BCAjaxServer extends DBHelper
 						echo $doc;	
 					}
 					break;
-				
-				//reset and show result
-				case 'reset':
-					//empty store
-					$this->_store->reset();
+
+				case 'import':
+					//query store
+					$this->_store->query("LOAD <http://bandclash/ontology/bandclash_inferred.owl>");
+					if ($errs = $this->_store->getErrors()) {
+						var_dump($errs);
+					}
+					else {
+						echo "<p>No errors by importing!</p>";	
+					}
 
 				// print all data in a table view
 				default:

@@ -2,22 +2,13 @@
 baisc logic for interface
 */
 $(document).ready(function(){
-	var test = $('#foo'); //.checked = true;
+	
+   //Ajax functionality
+   $('.btn.ajax').click(function(){
+         $.get('server.php?action=' + $(this).attr('href').substring(1), printResponse);
+   });
 
-	$('input[name=curi]').focus(function(){
-   		$('input[name=curib]').attr('checked', true);
-	});
-
-	$('#printbtn').click(function(){
-   		$.get('server.php?action=print', printResponse);
-	});
-
-	$('#resetbtn').click(function(){
-   		$.get('server.php?action=reset', printResponse);
-	});
-
-	//lacks url encoding to use bbc with '#' sign
-   	$('#crawlbtn').click(function(){
+   $('#crawlbtn').click(function(){
    		var uri
    		if ($('input[name=curib]').is(':checked')) {
 			uri = $('input[name=curi]').val();
@@ -31,11 +22,16 @@ $(document).ready(function(){
 
 	});
 
-	$("#output").bind("ajaxSend", function() {
-   		$(this).html('').addClass('ajax-loading');
- 	}).bind("ajaxComplete", function(){
-   		$(this).removeClass('ajax-loading');
- 	});
+   // UI enhancing
+   $("#output").bind("ajaxSend", function() {
+         $(this).html('').addClass('ajax-loading');
+   }).bind("ajaxComplete", function(){
+         $(this).removeClass('ajax-loading');
+   });
+
+   $('input[name=curi]').focus(function(){
+         $('input[name=curib]').attr('checked', true);
+   });
 
  });
 
