@@ -8,8 +8,8 @@
 <body>
 <?php
 require_once('parser.php');
-$artist=$_GET['artist'];
-$bcp = new BCParser("http://chartarchive.org", "/a/");
+$artist=(isset($_GET['artist']) ? $_GET['artist'] : "The Beatles");
+$bcp = new BCParser("http://chartarchive.org", "/a/", "http://dbpedia.org/resource/The_Beatles");
 $triples = $bcp->getChartsByArtist($artist);
 var_dump($triples);
 //echo $triples;
