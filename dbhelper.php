@@ -44,6 +44,12 @@ abstract class DBHelper
 		return $store;
 	}
 
+
+	/**
+	* Setup a Store to query on, from a the uri you query
+	* @param: $uri 
+	* @return: ARC2 Store Object
+	*/
 	protected function _getStore($uri)
 	{
 		//switch method by host

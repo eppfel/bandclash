@@ -1,3 +1,6 @@
+<?php
+$p = (isset($_REQUEST['p']) ? $_REQUEST['p'] : 'index');
+?>
 <!doctype html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
@@ -34,12 +37,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">BandClash</a>
+          <a class="brand" href="./">BandClash</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li<?php echo ($p == 'index' ? ' class="active"' : '') ?>><a href="./">Home</a></li>
+              <li<?php echo ($p == 'admin' ? ' class="active"' : '') ?>><a href="?p=admin">Admin Panel</a></li>
+              <li<?php echo ($p == 'about' ? ' class="active"' : '') ?>><a href="?p=about">About</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -48,38 +51,9 @@
 
     <div class="container">
 
-      <!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="hero-unit">
-        <h1>The Bandclash Admin Panel</h1>
-        <p>This is a prototype!</p>
-        <p>In this stage you can crawl, data about one band, show the aggregated data so far and export it to a triple file.
-        <p>
-          <form>
-            <select name="uri">
-              <option value="http://dbpedia.org/resource/The_Beatles">The Beatles</option>
-              <option value="http://dbpedia.org/resource/The_Rolling_Stones">The Rolling Stones</option>
-              <option value="http://dbpedia.org/resource/The_Who">The Who</option>
-              <option value="http://www.bbc.co.uk/music/artists/b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d#artist">The Beatles (@bbc)</option>
-              <option value="http://rdf.freebase.com/ns/m.07c0j">The Beatles (@freebase)</option>
-              <option value="http://dbpedia.org/resource/Pink_Floyd">Pink Floyd (@dbpedia)</option>
-              <option value="http://www.bbc.co.uk/music/artists/83d91898-7763-47d7-b03b-b92132375c47#artist">Pink Floyd (@bbc)</option>
-            </select>
-            <label for="curib">
-              <input type="checkbox" name="curib" /> Custom URI
-              <input type="text" name="curi" />
-            </label>
-          </form>  
-          <a class="btn btn-primary btn-large" id="crawlbtn">Crawl</a>
-          <a class="btn btn-primary btn-large" id="printbtn">Show Data</a>
-          <a class="btn btn-primary btn-large" href="./server.php?action=export">Download Triples &raquo;</a>
-          <a class="btn btn-danger btn-large" id="resetbtn">Empty DB</a>
-        </p>
-      </div>
-      <!-- Example row of columns -->
-      <div class="row">
-        <div id="output" class="span12">
-        </div>
-      </div>
+      <?php
+      include($p . '.inc.php');
+      ?>
 
       <hr>
 
@@ -95,6 +69,6 @@
 <script src="js/libs/bootstrap/bootstrap.min.js"></script>
 
 <script src="js/plugins.js"></script>
-<script src="js/script.js"></script>
+<script src="js/<?php echo $p ?>.js"></script>
 </body>
 </html>
