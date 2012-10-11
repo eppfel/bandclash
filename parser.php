@@ -158,15 +158,19 @@ class BCParser extends DBHelper
 			   } 	   	
 			   if(isset($triple_temp[1]["o"]))
 			   {
-			   		$releaseName = $triple_temp[1]["o"];
-			   		echo $this->fetchAll($releaseName, $this->_artistUri);
+			   		$this->_releaseName = $triple_temp[1]["o"];
+			   		//echo $this->fetchAll($releaseName, $this->_artistUri);
 			   };
 			   $this->_datacounter = 0;
 					   
-			   /*  for ($i=0; $i<=count($triple_temp); $i++)
+			   for ($i=0; $i<=5; $i++)
 			   {
-						   
-			   }*/				
+					$triple_temp[$i]['s']=$this->_releaseName;
+					$triple_temp[$i]['s type']= "literal";
+					//echo $triple_temp['o type']." ,";			   
+			   }
+			  	$this->_triples = array_merge($this->_triples, $triple_temp);	
+			  	//var_dump($this->_triples);			
 			}
 			   $this->_rowCounter++;
 		}
@@ -176,7 +180,7 @@ class BCParser extends DBHelper
 		return $this->_triples;
 	}
 	
-	public function fetchAll($releaseName, $artistUri)
+	public function fetchSongURI($releaseName, $artistUri)
 	{
 		/* Query */
 		$q = "
