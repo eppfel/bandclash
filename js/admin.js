@@ -2,7 +2,6 @@
 baisc logic for interface
 */
 $(document).ready(function(){
-	
    //Ajax functionality
    $('.btn.ajax').click(function(){
          $.get('server.php?action=' + $(this).attr('href').substring(1), printResponse);
@@ -34,6 +33,7 @@ $(document).ready(function(){
    });
 
  });
+
 
 function printResponse(data) {
 	$('#output').html(data);

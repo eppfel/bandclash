@@ -34,6 +34,10 @@ class BCAjaxServer extends DBHelper
 		{
 			switch ($_REQUEST['action']) {
 
+				case 'onload':
+					$triples = $this->_fetchArtists();
+					echo json_encode($triples);
+				break;
 				case 'crawl':
 					if (isset($_REQUEST['uri'])) {
 						$uri = $_REQUEST['uri'];
@@ -43,8 +47,7 @@ class BCAjaxServer extends DBHelper
 					}
 					$crawler = new Crawler();
 					$triples = $crawler->crawl($uri);
-					//var_dump($triples);
-					//var_dump($crawler->_queries);
+					var_dump($triples);
 
 					//insert everthing into db
 					$n = count($triples);
@@ -137,6 +140,18 @@ class BCAjaxServer extends DBHelper
 	private function _fetchAll()
 	{
 		$triples = $this->_store->query('SELECT ?s ?p ?o WHERE {?s ?p ?o}', 'rows');
+		if ($errs = $this->_store->getErrors()) {
+			var_dump($errs);
+		}
+		return $triples;
+	}
+
+	/*
+	* DB request for basic data, esp. all artists
+	*/
+	private function _fetchArtists()
+	{
+		$triples = $this->_store->query('SELECT ?uri ?name WHERE {?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Band>. ?uri <http://xmlns.com/foaf/0.1/name> ?name }' ,'rows');
 		if ($errs = $this->_store->getErrors()) {
 			var_dump($errs);
 		}
