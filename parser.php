@@ -112,11 +112,18 @@ class BCParser extends DBHelper
 								$src = $img->src;
 								$triple_temp[0]["o"] = $this->_baseURI . str_replace("-100", "-raw", $src);
 								
-								
-								//COVER THUMBNAIL
+								//COVER 300px
 								$triple_temp[7]["p"] = "http://xmlns.com/foaf/0.1/depiction";
 								$triple_temp[7]["p type"] = "uri";
 								$triple_temp[7]["o type"] = "uri";
+								//Add img URI
+								$src = $img->src;
+								$triple_temp[7]["o"] = $this->_baseURI.str_replace("-100", "-300", $src);
+								
+								//COVER THUMBNAIL
+								$triple_temp[8]["p"] = "http://xmlns.com/foaf/0.1/thumbnail";
+								$triple_temp[8]["p type"] = "uri";
+								$triple_temp[8]["o type"] = "uri";
 								//Add thumbnail URI
 								$src = $img->src;
 								$triple_temp[7]["o"] = $this->_baseURI . $src; //FIX: URI is not complete!
@@ -159,14 +166,18 @@ class BCParser extends DBHelper
 			   if(isset($triple_temp[1]["o"]))
 			   {
 			   		$releaseName = $triple_temp[1]["o"];
-			   		$this->fetchAll($releaseName, $this->_artistUri); //nottin returned here
+			   		$this->fetchAll($releaseName, $this->_artistUri); //nothin returned here
 			   };
 			   $this->_datacounter = 0;
 					   
-			   /*  for ($i=0; $i<=count($triple_temp); $i++)
+			   for ($i=0; $i<=5; $i++)
 			   {
-						   
-			   }*/				
+					$triple_temp[$i]['s']=$this->_releaseName;
+					$triple_temp[$i]['s type']= "literal";
+					//echo $triple_temp['o type']." ,";			   
+			   }
+			  	$this->_triples = array_merge($this->_triples, $triple_temp);	
+			  	//var_dump($this->_triples);			
 			}
 			   $this->_rowCounter++;
 		}
@@ -176,7 +187,7 @@ class BCParser extends DBHelper
 		return $this->_triples;
 	}
 	
-	public function fetchAll($releaseName, $artistUri)
+	public function fetchSongURI($releaseName, $artistUri)
 	{
 		/* Query */
 		$q = "
