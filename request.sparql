@@ -1,0 +1,38 @@
+CONSTRUCT {
+	<$uri> ?p ?o . 
+	?s ?p2 ≤$uri> . 
+	?song ?psong ?osong
+}
+WHERE { 
+	<$uri> ?p ?o . 
+	?s ?p2 ≤$uri> 
+	UNION {
+		{ ?song ex:artist <$uri>
+		  OPTIONAL ?song ex:musicalArtist <$uri> } .
+		?song ?psong ?osong .
+	}
+}
+
+
+CONSTRUCT {<http://dbpedia.org/resource/The_Beatles> ?p ?o .
+ <http://dbpedia.org/resource/The_Rolling_Stones> ?p2 ?o2 }
+WHERE {
+<http://dbpedia.org/resource/The_Beatles> ?p ?o .
+UNION { <http://dbpedia.org/resource/The_Rolling_Stones> ?p2 ?o2 }
+}
+
+CONSTRUCT {
+	<http://dbpedia.org/resource/The_Beatles> ?p ?o . 
+	?s ?p2 <http://dbpedia.org/resource/The_Beatles> . 
+	?song ?psong ?osong .
+                ?ssong ?p2song ?song .
+}
+WHERE { 
+	{ <http://dbpedia.org/resource/The_Beatles> ?p ?o . 
+	?s ?p2 <http://dbpedia.org/resource/The_Beatles> }
+	UNION {
+		?song <http://dbpedia.org/ontology/artist> <http://dbpedia.org/resource/The_Beatles> .
+		?song ?psong ?osong .
+                ?ssong ?p2song ?song .
+	}
+}

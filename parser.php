@@ -110,7 +110,7 @@ class BCParser extends DBHelper
 								$triple_temp[0]["o type"] = "uri";
 								//Add img URI
 								$src = $img->src;
-								$triple_temp[0]["o"] = $this->_baseURI.str_replace("-100", "-raw", $src);
+								$triple_temp[0]["o"] = $this->_baseURI . str_replace("-100", "-raw", $src);
 								
 								
 								//COVER THUMBNAIL
@@ -119,7 +119,7 @@ class BCParser extends DBHelper
 								$triple_temp[7]["o type"] = "uri";
 								//Add thumbnail URI
 								$src = $img->src;
-								$triple_temp[7]["o"] = $this->_baseURI;
+								$triple_temp[7]["o"] = $this->_baseURI . $src; //FIX: URI is not complete!
 							}
 							
 						break;
@@ -159,7 +159,7 @@ class BCParser extends DBHelper
 			   if(isset($triple_temp[1]["o"]))
 			   {
 			   		$releaseName = $triple_temp[1]["o"];
-			   		echo $this->fetchAll($releaseName, $this->_artistUri);
+			   		$this->fetchAll($releaseName, $this->_artistUri); //nottin returned here
 			   };
 			   $this->_datacounter = 0;
 					   
@@ -189,7 +189,7 @@ class BCParser extends DBHelper
 				?s foaf:name '".urlencode($releaseName)."'@en
 				}
 		";
-		echo $q;
+		//echo $q;
 
 		$store = $this->_getStore($artistUri);
 

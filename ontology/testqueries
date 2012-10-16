@@ -1,0 +1,6 @@
+SELECT *
+WHERE { $uri ?bandp ?bando .
+?subject ?reversep $uri .
+$uri db:musicalArtist ?song .
+?song ?songp ?songo
+}

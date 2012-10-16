@@ -43,7 +43,8 @@ class BCAjaxServer extends DBHelper
 					}
 					$crawler = new Crawler();
 					$triples = $crawler->crawl($uri);
-					var_dump($triples);
+					//var_dump($triples);
+					//var_dump($crawler->_queries);
 
 					//insert everthing into db
 					$n = count($triples);

@@ -5,10 +5,12 @@ require_once("dbhelper.php");
 final class Crawler extends DBHelper
 {
 	private $_responseString;
+	public $_queries;
 
 	function __construct()
 	{
 		//nothing
+		$this->_queries = array();
 	}
 
 	public function crawl($uri)
@@ -55,7 +57,7 @@ final class Crawler extends DBHelper
 						}
 						else
 						{
-							echo "sameAs doubled";
+							echo "sameAs URI duplicate: " . $row['o'];
 						}
 					}
 				}
@@ -66,26 +68,70 @@ final class Crawler extends DBHelper
 
 	public function fetchAll($uri)
 	{
-		/* Query */
+		/**
+		 * Safe/simple query
+		 * !Activate completion of triples with URI before return statement
+		 */
 		$q = 'SELECT ?p ?o WHERE { <'. $uri .'> ?p ?o . }';
+
+		/* Query with construct statement/
+		if (parse_url($uri, PHP_URL_HOST) == 'dbpedia.org') {
+			$q = 'CONSTRUCT { <'. $uri .'> ?p ?o . ?s2 ?p2 <'. $uri .'> } WHERE { {<'. $uri .'> ?p ?o } UNION { ?s2 ?p2 <'. $uri .'> . } }';
+		}
+
+		/* construct query inclduing songs of the band
+		if (FALSE && parse_url($uri, PHP_URL_HOST) == 'dbpedia.org') {
+	
+		$q = 'CONSTRUCT {
+			<'. $uri .'> ?p ?o . 
+			?s ?p2 <'. $uri .'> . 
+			?song ?psong ?osong .
+    		?ssong ?p2song ?song . }
+			WHERE { 
+				{ <'. $uri .'> ?p ?o . 
+				?s ?p2 <'. $uri .'> }
+				UNION {
+					?song <http://dbpedia.org/ontology/artist> <'. $uri .'> .
+					?song ?psong ?osong .
+        			?ssong ?p2song ?song .
+				}
+			}';	
+		}*/
 
 		$store = $this->_getStore($uri);
 
 		if (!is_null($store))
 		{
+			array_push($this->_queries, $q);
+
 			if ($rows = $store->query($q, 'rows'))
 			{
-				$rowsn = array();
-				foreach ($rows as $row) {
-					$row['s'] = $uri;
-					$row['s type'] = "uri";
-					array_push($rowsn, $row);
+				if (FALSE && parse_url($uri, PHP_URL_HOST) == 'dbpedia.org') {
+					$rowsn = array();
+					foreach ($rows as $row) {
+						$row['s'] = $uri;
+						$row['s type'] = "uri";
+						array_push($rowsn, $row);
+					}
 				}
+				else
+				{
+					$rowsn = $rows;
+				}
+				
 				return $rowsn;	
 			}
 			else if ($errs = $store->getErrors()) {
 				var_dump($errs);
 			}
+			else
+			{
+				//echo "No errors, but query return empty response at" . $uri . " : " . $store->getErrors() . "/n" ;
+			}
+		}
+		else
+		{
+			//echo "Store at " . $uri . " not available!/n";
 		}
 		return;
 	}

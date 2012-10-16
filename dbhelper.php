@@ -7,7 +7,7 @@ require_once('arc2/ARC2.php');
 */
 abstract class DBHelper
 {
-	private $_unhandledURIs;
+	protected $_unhandledURIs;
 	
 	function __construct()
 	{
