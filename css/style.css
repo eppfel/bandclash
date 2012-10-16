@@ -1,7 +1,7 @@
 
 
 /* ===== Primary Styles ========================================================
-   Author: Felix Epp
+   Authors: Felix Epp, Thomas Grah
    ========================================================================== */
 
 div#outputs td, div#outputs th {
@@ -16,9 +16,15 @@ div#outputs td, div#outputs th {
 	table-layout:fixed;
 	word-wrap:break-word;	
 }
-
-
-
+.txtaleft{
+	text-align: left;
+}
+.txtaright{
+	text-align: right;
+}
+.txtacenter{
+	text-align: center;
+}
 
 
 

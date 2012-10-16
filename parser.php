@@ -112,14 +112,21 @@ class BCParser extends DBHelper
 								$src = $img->src;
 								$triple_temp[0]["o"] = $this->_baseURI.str_replace("-100", "-raw", $src);
 								
-								
-								//COVER THUMBNAIL
+								//COVER 300px
 								$triple_temp[7]["p"] = "http://xmlns.com/foaf/0.1/depiction";
 								$triple_temp[7]["p type"] = "uri";
 								$triple_temp[7]["o type"] = "uri";
+								//Add img URI
+								$src = $img->src;
+								$triple_temp[7]["o"] = $this->_baseURI.str_replace("-100", "-300", $src);
+								
+								//COVER THUMBNAIL
+								$triple_temp[8]["p"] = "http://xmlns.com/foaf/0.1/thumbnail";
+								$triple_temp[8]["p type"] = "uri";
+								$triple_temp[8]["o type"] = "uri";
 								//Add thumbnail URI
 								$src = $img->src;
-								$triple_temp[7]["o"] = $this->_baseURI;
+								$triple_temp[8]["o"] = $this->_baseURI;
 							}
 							
 						break;
