@@ -8,7 +8,7 @@
       	<!--Band 1-->
       	<div class="span5">
       		<form class="pull-right">
-				<select></select>
+				<select id="band1"></select>
       		</form>
       		<div class="row">
       			<!--DESCRIPTION Band-->	
@@ -31,7 +31,7 @@
       	<!--Band 2-->
 		<div class="span5">
 			<form>
-				<select></select>
+				<select id="band2"></select>
       		</form>
       		<div class="row">
       			<!--IMAGE Band-->

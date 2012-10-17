@@ -106,7 +106,7 @@ final class Crawler extends DBHelper
 
 			if ($rows = $store->query($q, 'rows'))
 			{
-				if (FALSE && parse_url($uri, PHP_URL_HOST) == 'dbpedia.org') {
+				if (TRUE || parse_url($uri, PHP_URL_HOST) == 'dbpedia.org') { //TO FIX
 					$rowsn = array();
 					foreach ($rows as $row) {
 						$row['s'] = $uri;
