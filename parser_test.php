@@ -7,21 +7,13 @@
 
 <body>
 <?php
+error_reporting(E_ALL);
 require_once('parser.php');
-$artist=(isset($_GET['artist']) ? $_GET['artist'] : "The Beatles");
-$bcp = new BCParser("http://chartarchive.org", "/a/", "http://dbpedia.org/resource/The_Beatles");
-$triples = $bcp->getChartsByArtist($artist);
+$bcp = new BCParser("http://chartarchive.org", "/a/");
+$triples = $bcp->getChartsByArtist("http://dbpedia.org/resource/The_Beatles");
+//var_dump($bcp->unresolvedReleases);
 var_dump($triples);
-//echo $triples;
-/*foreach($triples as $key => $value)
-{
-	echo $key." : ";
-	foreach($value as $value)
-	{
-		echo $value." ";	
-	}
-	echo "<br />";	
-}*/
+
 
 ?>
 </body>

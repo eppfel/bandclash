@@ -2,8 +2,8 @@
 //Force UTF-8 for international triples
 header( 'Content-Type: text/html; charset=UTF-8' );
 error_reporting(E_ALL);
+
 require_once('utf8helper.php');
-require_once('crawler.php');
 require_once('dbhelper.php');
 
 /**
@@ -16,9 +16,9 @@ class BCAjaxServer extends DBHelper
 	
 	function __construct()
 	{
-		$this->_startpoint = "http://www.bbc.co.uk/music/artists/b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d#artist";
+		//$this->_startpoint = "http://www.bbc.co.uk/music/artists/b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d#artist";
 		//$this->_startpoint = "http://rdf.freebase.com/ns/m.07c0j";
-		//$this->_startpoint = "http://dbpedia.org/resource/The_Beatles";
+		$this->_startpoint = "http://dbpedia.org/resource/The_Beatles";
 
 		//setup store
 		$this->_store = $this->_getLocalStore('arc_bc');
@@ -55,33 +55,19 @@ class BCAjaxServer extends DBHelper
 					else {
 						$uri = $this->_startpoint;
 					}
-					$crawler = new Crawler();
-					$triples = $crawler->crawl($uri);
-					var_dump($triples);
-
-					//insert everthing into db
-					$n = count($triples);
-					if ($n) {
-						//$this->_store->reset(); //just if every crawl should start by 0
-						$this->_store->insert($triples, 'http://bandclash.net/ontology');
-						if ($errs = $this->_store->getErrors()) {
-							echo "Problems in Insert of aggregated triples: " . var_export($errs, true) . PHP_EOL;
-							//var_dump($triples);
-						}
-						else {
-							echo "Succesfully crawled " . $n . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
-							echo "These Sources were not crawled: " . $crawler->getUnhandledURIs . PHP_EOL;
-						}
-					}
-					else {
-						echo "Sadly nothing got crawled from &lt;" . $uri . "&gt;." . PHP_EOL;
-					}
+					$this->_crawlByArtist($uri);
 					break;
 
 				//reset and show result
 				case 'reset':
 					//empty store
 					$this->_store->reset();
+					if ($errs = $this->_store->getErrors()) {
+						var_dump($errs);
+					}
+					else {
+						echo "<p>Store reseted with no errors!</p>";
+					}
 					break;
 				
 				case 'export':
@@ -104,43 +90,19 @@ class BCAjaxServer extends DBHelper
 						var_dump($errs);
 					}
 					else {
-						echo "<p>No errors by importing!</p>";	
+						echo "<p>No errors by importing!</p>";
 					}
 
 				// print all data in a table view
+				//FIX: Move markup to client side
 				default:
 					$triples = $this->_fetchAll();
-					$n = count($triples);
-					if ($n) {
-						$r = '<p>The db contains ' . $n . ' Triples.</p>' . PHP_EOL;
-						$r .= '<table class="table table-striped table-condensed tfixed">' . PHP_EOL;
-						$r .= '<thead><tr><th>s</th><th>p</th><th>o</th></tr></thead>' . PHP_EOL;
-						$r .= '<tbody>' . PHP_EOL;
-						foreach ($triples as $row) {
-							$r .= '<tr>';
-							$r .= '<td>' . $row['s'] . '</td>';
-							$r .= '<td>' . $row['p'] . '</td>';
-							$r .= '<td>' . fixUtf8($row['o']) . '</td>';
-							$r .= '</tr>' . PHP_EOL;
-						}
-						$r .= '</tbody>' . PHP_EOL;
-						$r .= '</table>';
-						echo $r;
-					}
-					else
-					{
-						echo "Local store is empty!" . PHP_EOL;
-					}
 					break;
 			}
 		}
 		else
 		{
-			header('Warning: "This location is not for direct access. Please go back to <a href=./index.html>Index</a>"');
-		}
-
-		if ($errs = $this->_store->getErrors()) {
-			//var_dump($errs);
+			header("Location: http://" . $_SERVER['HTTP_HOST'] );
 		}
 	}
 
@@ -152,8 +114,29 @@ class BCAjaxServer extends DBHelper
 		$triples = $this->_store->query('SELECT ?s ?p ?o WHERE {?s ?p ?o}', 'rows');
 		if ($errs = $this->_store->getErrors()) {
 			var_dump($errs);
+		} 
+		else if ($n = count($triples))
+		{
+			$r = '<p>The db contains ' . $n . ' Triples.</p>' . PHP_EOL;
+			$r .= '<table class="table table-striped table-condensed tfixed">' . PHP_EOL;
+			$r .= '<thead><tr><th>s</th><th>p</th><th>o</th></tr></thead>' . PHP_EOL;
+			$r .= '<tbody>' . PHP_EOL;
+			foreach ($triples as $row) {
+				$r .= '<tr>';
+				$r .= '<td>' . $row['s'] . '</td>';
+				$r .= '<td>' . $row['p'] . '</td>';
+				$r .= '<td>' . fixUtf8($row['o']) . '</td>';
+				$r .= '</tr>' . PHP_EOL;
+			}
+			$r .= '</tbody>' . PHP_EOL;
+			$r .= '</table>';
+			echo $r;
 		}
-		return $triples;
+		else
+		{
+			echo "Local store is empty!" . PHP_EOL;
+		}
+		//return $triples;
 	}
 
 	/*
@@ -168,6 +151,7 @@ class BCAjaxServer extends DBHelper
 		return $triples;
 	}
 
+
 	private function _fetchBandDetails($uri)
 	{
 		$triples = $this->_store->query('SELECT ?comment ?name ?depiction WHERE {<'.$uri.'> <http://www.w3.org/2000/01/rdf-schema#comment> ?comment. <'.$uri.'> <http://xmlns.com/foaf/0.1/name> ?name. <'.$uri.'> <http://dbpedia.org/ontology/thumbnail> ?depiction. FILTER (langMATCHES (LANG(?comment),"en"))}' ,'rows');
@@ -176,6 +160,66 @@ class BCAjaxServer extends DBHelper
 		}
 		return $triples;
 	}
+
+	private function _crawlByArtist($uri)
+	{
+		//use crawler to aggregate data
+		require_once('crawler.php');
+		$crawler = new Crawler();
+		$triples = $crawler->crawl($uri);
+
+		/*/insert everthing into db
+		$n = count($triples);
+		if ($n) {
+			//$this->_store->reset(); //just if every crawl should start by 0
+
+			$this->_store->insert($triples, 'http://bandclash.net/ontology');
+
+			if ($errs = $this->_store->getErrors())
+			{
+				echo "Problems in Insert of aggregated triples: " . var_export($errs, true) . PHP_EOL;
+				var_dump($triples);
+			}
+			else
+			{
+				echo "Succesfully crawled " . $n . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
+				echo "These Sources were not crawled: " . $crawler->getUnhandledURIs() . PHP_EOL;
+
+			}
+		}
+		else {
+			echo "Sadly nothing got crawled from &lt;" . $uri . "&gt;." . PHP_EOL;
+		}
+		*/
+
+		$this->_parseChartsByArtist($uri);
+
+		echo "<p>Show all data, result status unknown so far</p>";
+
+		$this->_fetchAll();
+	}
+
+	/**
+	 * parse data from chartarchive.org
+	 * FIX: get inferences from local store
+	 */
+	private function _parseChartsByArtist($uri)
+	{
+		require_once('parser.php');
+		$bcp = new BCParser("http://chartarchive.org", "/a/");
+		$triples = $bcp->getChartsByArtist($uri);
+
+		$this->_store->insert($triples, 'http://bandclash.net/ontology');
+		if ($errs = $this->_store->getErrors())
+		{
+			echo "Problems in Insert of parsed triples: " . var_export($errs, true) . PHP_EOL;
+		}
+		else
+		{
+			echo "Succesfully parsed " . count($triples) . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
+		}
+	}			
+>>>>>>> b77451003f207d450ae330fafb9bf160e3f2f467
 }
 
 //init server and run handler

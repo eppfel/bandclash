@@ -9,219 +9,217 @@ class BCParser extends DBHelper
 {
 	private $_baseURI;
 	private $_subPath;
-	private $_rowCounter;
-	private $_triples = array();
-	private $_datacounter;
-	private $_artistname;
-	private $_artistUri;
-	private $_releasetype;
-	private $_numberOfTableHeads;
+	public $unresolvedReleases;
 	
-	public function __construct($baseURI, $subPath, $artistUri)
+	public function __construct($baseURI, $subPath)
 	{
 		$this->_baseURI = $baseURI;
 		$this->_subPath = $subPath;
-		$this->_rowCounter = 0;
-		$this->_datacounter = 0;
-		$this->_artistname = "";
-		$this->_artistUri = $artistUri;
-		$this->_releasetype = "";
-		$this->_releaseName = "";
-		$this->_numberOfTableHeads=0;
+		$this->unresolvedRelaeses = array();
 	}
-	
-	
-	private function _getSubjectFromDbPedia($releasename)
-	{
-		/**To Do:
-			Get URI for Release from dbPedia
-		**/
-		
-		$uri = $releasename;
-		/*array_push($fringe, $uri);
 
-		if ($depth > 0)
+	/**
+	 * Function to parse all hits by an artist from chartarchive.org
+	 * Fix: parameter artsit uri
+	 * Fix: correct releaseType URI from dbpedia
+	 */
+	public function getChartsByArtist($artistURI)
+	{	
+		//get name of artist in order to parse it
+		$store = $this->_getStore($artistURI);
+
+		if (!is_null($store))
 		{
-			//echo "URI: " . $uri . " , Depth: " . $depth . PHP_EOL;
-			/* Query */
-			/*
-			$q = '
-			PREFIX owl: <http://www.w3.org/2002/07/owl#>
-			SELECT ?o
-			WHERE { <'.$uri.'> owl:sameAs ?o . }';
-		
-			$store = $this->_getStore($uri);
-		
-			if (!is_null($store)) {
-				if ($rows = $store->query($q, 'rows')) {
-					foreach ($rows as $row) {
-						if (!in_array($row['o'], $fringe)) {
-							$fringe = $this->fetchSameAs($row['o'], $depth-1, $fringe);
-						}
-					}
-				}
+			$rows = $store->query("SELECT ?name WHERE { <$artistURI> <http://xmlns.com/foaf/0.1/name> ?name }", 'rows');
+			if ($rows) {
+				$artistName = $rows[0]['name'];
+			}
+			else
+			{
+				echo "result is is empty";
+				return;
 			}
 		}
-		*/
-		
-		return $uri;
-	}
+		else
+		{
+			echo "store is is null" .  $artistURI;
+			return;
+		}
 
-	public function getChartsByArtist ($artistName)
-	{
-		$fixedArtistName = str_replace(" ", "+", $artistName);
-		$uri = $this->_baseURI.$this->_subPath.$fixedArtistName;
 		// parse a Site
 		// Create DOM from URL or file
+		$uri = $this->_baseURI . $this->_subPath . str_replace(" ", "+", $artistName);
 		$html = file_get_html($uri);
+		if ($html == FALSE) return;
+
+		//init vars
+		$triples = array();
+		$releaseType = '';
 
 		foreach($html->find('table') as $table) 
 		{
-			foreach($table->find('th') as $tablehead)
-			{
-				$this->_numberOfTableHeads++;
-				if($tablehead->plaintext=='Singles')
-				{
-					$this->_releasetype = 'http://dbpedia.org/ontology/Single'; //Replace by correct URI
-				}
-				
-				if($tablehead->plaintext=='Albums')
-				{
-					$this->_releasetype = 'http://dbpedia.org/ontology/Album'; //Replace by correct URI
-				}
-					
-			}
+			$rowC = 0;
+
 			// Find all trs 
-			foreach($html->find('tr') as $tablerow) 
+			foreach($table->find('tr') as $tablerow) 
 			{
-				# Temporary triple array 
-				$triple_temp = array();
-				
-			   foreach($tablerow->find('td') as $element)
-			   {	
-					switch($this->_datacounter)
+
+				//for each table or 
+				if ($rowC == 0) {
+					
+					$tablehead = $tablerow->find('th' , 0);
+					if($tablehead->plaintext == 'Singles')
 					{
-						case 0:
-							foreach($element->find('img') as $img)
-							{
-								//COVER LARGE
-								$triple_temp[0]["p"] = "http://xmlns.com/foaf/0.1/depiction";
-								$triple_temp[0]["p type"] = "uri";
-								$triple_temp[0]["o type"] = "uri";
+						$releaseType= 'http://dbpedia.org/ontology/Single'; //Replace by correct URI
+					}
+					else if($tablehead->plaintext == 'Albums')
+					{
+						$releaseType = 'http://dbpedia.org/ontology/Album'; //Replace by correct URI
+					}
+					else {
+						//throw new Exception("Error Parsing wether albums or Singles", 1);
+					}
+					
+				}
+				else if ($rowC > 1) {
+
+					# Temporary triple array
+					$triples_temp = array();
+				  	$tdC = 0;
+				  	$releaseName = '';
+					
+					//scan cells for infos	!!!change id to push
+				   	foreach($tablerow->find('td') as $element)
+				   	{	
+				   		$triple_temp = array();
+
+						switch($tdC)
+						{
+							case 0:
 								//Add img URI
+								
+								if (!$img = $element->find('img', 0)) break;
 								$src = $img->src;
-								$triple_temp[0]["o"] = $this->_baseURI . str_replace("-100", "-raw", $src);
+
+								//COVER LARGE
+								$triple_temp["p"] = "http://xmlns.com/foaf/0.1/depiction";
+								$triple_temp["p type"] = "uri";
+								$triple_temp["o type"] = "uri";
+								$triple_temp["o"] = $this->_baseURI . str_replace("-100", "-raw", $src);
+								$triples_temp[] = $triple_temp;
 								
 								//COVER 300px
-								$triple_temp[7]["p"] = "http://xmlns.com/foaf/0.1/depiction";
-								$triple_temp[7]["p type"] = "uri";
-								$triple_temp[7]["o type"] = "uri";
-								//Add img URI
-								$src = $img->src;
-								$triple_temp[7]["o"] = $this->_baseURI.str_replace("-100", "-300", $src);
+								$triple_temp["p"] = "http://xmlns.com/foaf/0.1/depiction";
+								$triple_temp["p type"] = "uri";
+								$triple_temp["o type"] = "uri";
+								$triple_temp["o"] = $this->_baseURI.str_replace("-100", "-300", $src);
+								$triples_temp[] = $triple_temp;
 								
 								//COVER THUMBNAIL
-								$triple_temp[8]["p"] = "http://xmlns.com/foaf/0.1/thumbnail";
-								$triple_temp[8]["p type"] = "uri";
-								$triple_temp[8]["o type"] = "uri";
-								//Add thumbnail URI
-								$src = $img->src;
-								$triple_temp[7]["o"] = $this->_baseURI . $src; //FIX: URI is not complete!
-							}
-							
-						break;
-						case 1:
-							$triple_temp[1]["p type"] = "uri";
-							$triple_temp[1]["p"] = "http://www.w3.org/2000/01/rdf-schema#label";
-							$triple_temp[1]["o type"] = "literal";
-							$triple_temp[1]["o"] = $element->plaintext;
-						break;	
-						case 2:
-							$triple_temp[2]["p type"] = "uri";
-							$triple_temp[2]["p"] = "http://www.bandclash.net/onthology#firstCharted";
-							$triple_temp[2]["o type"] = "literal";
-							$triple_temp[2]["o"] = $element->plaintext;
-						break;	
-						case 3:
-							$triple_temp[3]["p type"] = "uri";
-							$triple_temp[3]["p"] = "http://www.bandclash.net/onthology#lastCharted";
-							$triple_temp[3]["o type"] = "literal";
-							$triple_temp[3]["o"] = $element->plaintext;
-						break;	
-						case 4:
-							$triple_temp[4]["p type"] = "uri";
-							$triple_temp[4]["p"] = "http://www.bandclash.net/onthology#chartAppearances";
-							$triple_temp[4]["o type"] = "literal";
-							$triple_temp[4]["o"] = $element->plaintext;
-						break;	
-						case 5:
-							$triple_temp[5]["p type"] = "uri";
-							$triple_temp[5]["p"] = "http://www.bandclash.net/onthology#chartPeak";
-							$triple_temp[5]["o type"] = "literal";
-							$triple_temp[5]["o"] = $element->plaintext;
-						break;	
-					}
-						$this->_datacounter++;
-			   } 	   	
-			   if(isset($triple_temp[1]["o"]))
-			   {
-			   		$releaseName = $triple_temp[1]["o"];
-			   		$this->fetchAll($releaseName, $this->_artistUri); //nothin returned here
-			   };
-			   $this->_datacounter = 0;
-					   
-			   for ($i=0; $i<=5; $i++)
-			   {
-					$triple_temp[$i]['s']=$this->_releaseName;
-					$triple_temp[$i]['s type']= "literal";
-					//echo $triple_temp['o type']." ,";			   
-			   }
-			  	$this->_triples = array_merge($this->_triples, $triple_temp);	
-			  	//var_dump($this->_triples);			
+								$triple_temp["p"] = "http://xmlns.com/foaf/0.1/thumbnail";
+								$triple_temp["p type"] = "uri";
+								$triple_temp["o type"] = "uri";
+								$triple_temp["o"] = $this->_baseURI . $src; //FIX: URI is not complete!
+								break;
+							case 1:
+								$releaseName = $element->plaintext;
+								break;	
+
+							case 2:
+								$triple_temp["p type"] = "uri";
+								$triple_temp["p"] = "http://www.bandclash.net/ontology#firstCharted";
+								$triple_temp["o type"] = "literal";
+								$triple_temp["o"] = $element->plaintext;
+								break;	
+
+							case 3:
+								$triple_temp["p type"] = "uri";
+								$triple_temp["p"] = "http://www.bandclash.net/ontology#lastCharted";
+								$triple_temp["o type"] = "literal";
+								$triple_temp["o"] = $element->plaintext;
+								break;	
+
+							case 4:
+								$triple_temp["p type"] = "uri";
+								$triple_temp["p"] = "http://www.bandclash.net/ontology#chartAppearances";
+								$triple_temp["o type"] = "literal";
+								$triple_temp["o"] = $element->plaintext;
+								break;	
+
+							case 5:
+								$triple_temp["p type"] = "uri";
+								$triple_temp["p"] = "http://www.bandclash.net/ontology#chartPeak";
+								$triple_temp["o type"] = "literal";
+								$triple_temp["o"] = $element->plaintext;
+								break;	
+						}
+						if(($triple_temp)) $triples_temp[] = $triple_temp;
+						$tdC++;
+				   	}
+
+				   	/**
+				   	 * set subject uri from title/name of release
+				   	 * FIX: some releases are not identified and therefore are ignored
+				   	 */
+				   	$releaseURI = $this->fetchReleaseURI($releaseName, $artistURI, $releaseType);
+				   	if ($releaseURI) {
+				   		foreach ($triples_temp as $triple)
+					   	{
+							$triple['s'] 		= $releaseURI;
+							$triple['s type'] 	= "uri";
+							$triples[] = $triple;
+					   	}
+				   	}
+				   	
+				}
+
+			   	$rowC++;
 			}
-			   $this->_rowCounter++;
 		}
 		
-		//return results as _triples
-
-		return $this->_triples;
+		//return results as triples !FIX: empty, because results are not transfered to var $triples
+		return $triples;
 	}
 	
-	public function fetchSongURI($releaseName, $artistUri)
+	/**
+	 * Function to fetch a dbpedia URI to infer the parsed data with RDF data
+	 * @return URI or FALSE
+	 */
+	private function fetchReleaseURI($releaseName, $artistURI, $releaseType)
 	{
 		/* Query */
 		$q = "
 		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 		PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-		SELECT ?s
+		SELECT ?rURI
 		WHERE 	{
-			  	?s <http://dbpedia.org/ontology/musicalArtist> <$artistUri> .
-				?s rdf:type <".$this->_releasetype."> .
-				?s foaf:name '".urlencode($releaseName)."'@en
-				}
-		";
+			  	?rURI <http://dbpedia.org/property/artist> <$artistURI> .
+				?rURI rdf:type <$releaseType> .
+				?rURI foaf:name '" . addslashes($releaseName) . "'@en
+		}";
 		//echo $q;
 
-		$store = $this->_getStore($artistUri);
+		$store = $this->_getStore($artistURI);
 
 		if (!is_null($store))
 		{
-			if (count($rows = $store->query($q, 'rows'))==1)
-			{
-				return $rows[0]['s'];
-				/*$rowsn = array();
-				foreach ($rows as $row) {
-					$row['s'] = $uri;
-					$row['s type'] = "uri";
-					array_push($rowsn, $row);
-				}
-				return $rowsn;	*/
-			}
-			else if ($errs = $store->getErrors()) {
+			$rows = $store->query($q, 'rows');
+			if ($errs = $store->getErrors()) {
 				var_dump($errs);
 			}
+			else if (count($rows) == 1)
+			{
+				return $rows[0]['rURI'];
+			}
+			else if (count($rows) > 1) {
+				echo "Multiple uri results for this release: " . $artistURI . " : " . $releaseName ;
+			}
+			else
+			{
+				$this->unresolvedReleases[] = $releaseName;
+			}
 		}
-		return;
+		return FALSE;
 	}
 }
 ?>
