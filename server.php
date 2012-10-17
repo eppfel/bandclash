@@ -1,7 +1,7 @@
 <?php
 //Force UTF-8 for international triples
 header( 'Content-Type: text/html; charset=UTF-8' );
-
+error_reporting(E_ALL);
 require_once('utf8helper.php');
 require_once('crawler.php');
 require_once('dbhelper.php');
@@ -36,6 +36,16 @@ class BCAjaxServer extends DBHelper
 
 				case 'onload':
 					$triples = $this->_fetchArtists();
+					echo json_encode($triples);
+				break;
+				case 'updateBand':
+					if (isset($_REQUEST['uri'])) {
+						$uri = $_REQUEST['uri'];
+					}
+					else {
+						$uri = $this->_startpoint;
+					}
+					$triples = $this->_fetchBandDetails($uri);
 					echo json_encode($triples);
 				break;
 				case 'crawl':
@@ -154,6 +164,15 @@ class BCAjaxServer extends DBHelper
 		$triples = $this->_store->query('SELECT ?uri ?name WHERE {?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Band>. ?uri <http://xmlns.com/foaf/0.1/name> ?name }' ,'rows');
 		if ($errs = $this->_store->getErrors()) {
 			var_dump($errs);
+		}
+		return $triples;
+	}
+
+	private function _fetchBandDetails($uri)
+	{
+		$triples = $this->_store->query('SELECT ?comment ?name ?depiction WHERE {<'.$uri.'> <http://www.w3.org/2000/01/rdf-schema#comment> ?comment. <'.$uri.'> <http://xmlns.com/foaf/0.1/name> ?name. <'.$uri.'> <http://dbpedia.org/ontology/thumbnail> ?depiction. FILTER (langMATCHES (LANG(?comment),"en"))}' ,'rows');
+		if ($errs = $this->_store->getErrors()) {
+			$triples[]=$errs;
 		}
 		return $triples;
 	}
