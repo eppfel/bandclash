@@ -9,8 +9,8 @@
 <?php
 require_once('parser.php');
 $artist=(isset($_GET['artist']) ? $_GET['artist'] : "The Beatles");
-$bcp = new BCParser("http://chartarchive.org", "/a/", "http://dbpedia.org/resource/The_Beatles");
-$triples = $bcp->getChartsByArtist($artist);
+$bcp = new BCParser("http://chartarchive.org", "/a/");
+$triples = $bcp->getChartsByArtist($artist, "http://example.org/");
 var_dump($triples);
 //echo $triples;
 /*foreach($triples as $key => $value)
