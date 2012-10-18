@@ -15,11 +15,15 @@ final class Crawler extends DBHelper
 
 	public function crawl($uri)
 	{
-		//SameAsLinks
+		//testing
+		$this->fetchAll($uri);
+		return;
+
+		/*/SameAsLinks
 		$fringe = array();
 		$fringe = $this->fetchSameAs($uri);
 
-		//Aggregation (temporary request All where URI is subject)
+		//Aggregation
 		if (count($fringe) > 1)
 		{
 			$triples = array();
@@ -31,7 +35,7 @@ final class Crawler extends DBHelper
 				}
 			}
 		}
-		return $triples; 
+		return $triples; */
 	}
 
 	public function fetchSameAs($uri, $depth = 3, $fringe = array())
@@ -68,70 +72,89 @@ final class Crawler extends DBHelper
 
 	public function fetchAll($uri)
 	{
-		/**
-		 * Safe/simple query
-		 * !Activate completion of triples with URI before return statement
-		 */
-		$q = 'SELECT ?p ?o WHERE { <'. $uri .'> ?p ?o . }';
-
-		/* Query with construct statement/
-		if (parse_url($uri, PHP_URL_HOST) == 'dbpedia.org') {
-			$q = 'CONSTRUCT { <'. $uri .'> ?p ?o . ?s2 ?p2 <'. $uri .'> } WHERE { {<'. $uri .'> ?p ?o } UNION { ?s2 ?p2 <'. $uri .'> . } }';
-		}
-
-		/* construct query inclduing songs of the band
-		if (FALSE && parse_url($uri, PHP_URL_HOST) == 'dbpedia.org') {
-	
-		$q = 'CONSTRUCT {
-			<'. $uri .'> ?p ?o . 
-			?s ?p2 <'. $uri .'> . 
-			?song ?psong ?osong .
-    		?ssong ?p2song ?song . }
-			WHERE { 
-				{ <'. $uri .'> ?p ?o . 
-				?s ?p2 <'. $uri .'> }
-				UNION {
-					?song <http://dbpedia.org/ontology/artist> <'. $uri .'> .
-					?song ?psong ?osong .
-        			?ssong ?p2song ?song .
-				}
-			}';	
-		}*/
-
-		$store = $this->_getStore($uri);
-
-		if (!is_null($store))
-		{
-			array_push($this->_queries, $q);
-
-			if ($rows = $store->query($q, 'rows'))
+		
+		if ($store = $this->_getStore($uri)) {
+			
+			/* construct query inclduing songs of the band */
+			if (parse_url($uri, PHP_URL_HOST) != 'dbpedia.org')
 			{
-				if (TRUE || parse_url($uri, PHP_URL_HOST) == 'dbpedia.org') { //TO FIX
+				/**
+				 * Safe/simple query
+				 * !Activate completion of triples with URI before return statement
+				 */
+				$q = 'SELECT ?p ?o WHERE { <'. $uri .'> ?p ?o . }';
+
+				$this->_queries[] = $q;
+
+				$rows = $store->query($q, 'rows');
+
+				if ($errs = $store->getErrors()) {
+					var_dump($errs);
+				}
+				else if ($rows)
+				{
+					 //TO FIX
 					$rowsn = array();
 					foreach ($rows as $row) {
 						$row['s'] = $uri;
 						$row['s type'] = "uri";
 						array_push($rowsn, $row);
+					
 					}
+					
+					return $rowsn;	
 				}
-				else
+				else 
 				{
-					$rowsn = $rows;
+					echo "No errors, but query returned empty response at" . $uri . " : " . $store->getErrors() . "/n" ;
 				}
-				
-				return $rowsn;	
 			}
-			else if ($errs = $store->getErrors()) {
-				var_dump($errs);
-			}
-			else
+			else //dbpedia
 			{
-				//echo "No errors, but query return empty response at" . $uri . " : " . $store->getErrors() . "/n" ;
+				//complex sparql request
+				$q = '
+					PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+					PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+					CONSTRUCT {
+					<'. $uri .'> ?p ?o . 
+					?s ?p2 <'. $uri .'> . 
+					?r <http://dbpedia.org/ontology/artist> <'. $uri .'> .
+					?r rdf:type ?rtype .
+					?r foaf:name ?rname . }
+					WHERE { 
+						{ <'. $uri .'> ?p ?o . 
+						?s ?p2 <'. $uri .'> }
+						UNION {
+							?r <http://dbpedia.org/ontology/artist> <'. $uri .'> .
+							?r rdf:type ?rtype .
+							?r foaf:name ?rname .
+						}
+					}';	
+
+				//* Query with construct statement without songs/
+				//$q = 'CONSTRUCT { <'. $uri .'> ?p ?o . ?s2 ?p2 <'. $uri .'> } WHERE { {<'. $uri .'> ?p ?o } UNION { ?s2 ?p2 <'. $uri .'> . } }';
+
+				$this->_queries[] = $q;
+
+				$index = $store->query($q);
+
+				if ($errs = $store->getErrors()) {
+					var_dump($errs);
+				}
+				else if (isset($index['result']) && $index['result'])
+				{
+					 //TO FIX
+					$this->_getLocalStore('arc_bc')->insert($index['result'], 'http://bandclash.net/ontology');
+					//$triples = ARC2::getTriplesFromIndex($index['result']);
+					var_dump($this->_queries);
+					
+					return ;//$triples;	
+				}
+				else 
+				{
+					echo "No errors, but query returned empty response at" . $uri . " : " . $store->getErrors() . "/n" ;
+				}
 			}
-		}
-		else
-		{
-			//echo "Store at " . $uri . " not available!/n";
 		}
 		return;
 	}

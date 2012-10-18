@@ -52,6 +52,12 @@ class BCAjaxServer extends DBHelper
 				case 'reset':
 					//empty store
 					$this->_store->reset();
+					if ($errs = $this->_store->getErrors()) {
+						var_dump($errs);
+					}
+					else {
+						echo "<p>Store reseted with no errors!</p>";
+					}
 					break;
 				
 				case 'export':
@@ -78,6 +84,7 @@ class BCAjaxServer extends DBHelper
 					}
 
 				// print all data in a table view
+				//FIX: Move markup to client side
 				default:
 					$triples = $this->_fetchAll();
 					$n = count($triples);
@@ -106,11 +113,7 @@ class BCAjaxServer extends DBHelper
 		}
 		else
 		{
-			header('Warning: "This location is not for direct access. Please go back to <a href=./index.html>Index</a>"');
-		}
-
-		if ($errs = $this->_store->getErrors()) {
-			//var_dump($errs);
+			header("Location: http://" . $_SERVER['HTTP_HOST'] );
 		}
 	}
 
@@ -144,7 +147,6 @@ class BCAjaxServer extends DBHelper
 		require_once('crawler.php');
 		$crawler = new Crawler();
 		$triples = $crawler->crawl($uri);
-		var_dump($triples);
 
 		//insert everthing into db
 		$n = count($triples);
@@ -156,34 +158,40 @@ class BCAjaxServer extends DBHelper
 			if ($errs = $this->_store->getErrors())
 			{
 				echo "Problems in Insert of aggregated triples: " . var_export($errs, true) . PHP_EOL;
-				//var_dump($triples);
+				var_dump($triples);
 			}
 			else
 			{
 				echo "Succesfully crawled " . $n . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
 				echo "These Sources were not crawled: " . $crawler->getUnhandledURIs() . PHP_EOL;
 
-				//parse data from chartarchive.org
-				require_once('parser.php');
-				$bcp = new BCParser("http://chartarchive.org", "/a/");
-				$triples = $bcp->getChartsByArtist($uri);
-
-				$this->_store->insert($triples, 'http://bandclash.net/ontology');
-				if ($errs = $this->_store->getErrors())
-				{
-					echo "Problems in Insert of parsed triples: " . var_export($errs, true) . PHP_EOL;
-				}
-				else
-				{
-					echo "Succesfully parsed " . count($triples) . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
-				}
+				//$this->_parseChartsByArtist($uri);
 			}
 		}
 		else {
 			echo "Sadly nothing got crawled from &lt;" . $uri . "&gt;." . PHP_EOL;
 		}
 	}
-					
+
+	/**
+	 * parse data from chartarchive.org
+	 */
+	private function _parseChartsByArtist($uri)
+	{
+		require_once('parser.php');
+		$bcp = new BCParser("http://chartarchive.org", "/a/");
+		$triples = $bcp->getChartsByArtist($uri);
+
+		$this->_store->insert($triples, 'http://bandclash.net/ontology');
+		if ($errs = $this->_store->getErrors())
+		{
+			echo "Problems in Insert of parsed triples: " . var_export($errs, true) . PHP_EOL;
+		}
+		else
+		{
+			echo "Succesfully parsed " . count($triples) . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
+		}
+	}			
 }
 
 //init server and run handler

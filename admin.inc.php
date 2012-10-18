@@ -11,7 +11,7 @@
               <option value="http://dbpedia.org/resource/The_Who">The Who</option>
               <option value="http://www.bbc.co.uk/music/artists/b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d#artist">The Beatles (@bbc)</option>
               <option value="http://rdf.freebase.com/ns/m.07c0j">The Beatles (@freebase)</option>
-              <option value="http://dbpedia.org/resource/Pink_Floyd">Pink Floyd (@dbpedia)</option>
+              <!-- Pink Floyd throws error by inserting uri "http://dbpedia.org/class/yago/PeopleFromDeal,Kent" <option value="http://dbpedia.org/resource/Pink_Floyd">Pink Floyd (@dbpedia)</option>-->
               <option value="http://www.bbc.co.uk/music/artists/83d91898-7763-47d7-b03b-b92132375c47#artist">Pink Floyd (@bbc)</option>
             </select>
             <label for="curib">
