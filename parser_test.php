@@ -9,9 +9,8 @@
 <?php
 error_reporting(E_ALL);
 require_once('parser.php');
-$artist=(isset($_GET['artist']) ? $_GET['artist'] : "The Beatles");
 $bcp = new BCParser("http://chartarchive.org", "/a/");
-$triples = $bcp->getChartsByArtist($artist, "http://dbpedia.org/resource/The_Beatles");
+$triples = $bcp->getChartsByArtist("http://dbpedia.org/resource/The_Beatles");
 //var_dump($bcp->unresolvedReleases);
 var_dump($triples);
 

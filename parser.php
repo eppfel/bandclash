@@ -23,8 +23,29 @@ class BCParser extends DBHelper
 	 * Fix: parameter artsit uri
 	 * Fix: correct releaseType URI from dbpedia
 	 */
-	public function getChartsByArtist ($artistName, $artistURI)
+	public function getChartsByArtist($artistURI)
 	{	
+		//get name of artist in order to parse it
+		$store = $this->_getStore($artistURI);
+
+		if (!is_null($store))
+		{
+			$rows = $store->query("SELECT ?name WHERE { <$artistURI> <http://xmlns.com/foaf/0.1/name> ?name }", 'rows');
+			if ($rows) {
+				$artistName = $rows[0]['name'];
+			}
+			else
+			{
+				echo "result is is empty";
+				return;
+			}
+		}
+		else
+		{
+			echo "store is is null" .  $artistURI;
+			return;
+		}
+
 		// parse a Site
 		// Create DOM from URL or file
 		$uri = $this->_baseURI . $this->_subPath . str_replace(" ", "+", $artistName);
@@ -132,7 +153,7 @@ class BCParser extends DBHelper
 								$triple_temp["o"] = $element->plaintext;
 								break;	
 						}
-						if(count($triple_temp2) $triples_temp[] = $triple_temp;
+						if(($triple_temp)) $triples_temp[] = $triple_temp;
 						$tdC++;
 				   	}
 

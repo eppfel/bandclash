@@ -1,9 +1,9 @@
 <?php
 //Force UTF-8 for international triples
 header( 'Content-Type: text/html; charset=UTF-8' );
+error_reporting(E_ALL);
 
 require_once('utf8helper.php');
-require_once('crawler.php');
 require_once('dbhelper.php');
 
 /**
@@ -16,9 +16,9 @@ class BCAjaxServer extends DBHelper
 	
 	function __construct()
 	{
-		$this->_startpoint = "http://www.bbc.co.uk/music/artists/b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d#artist";
+		//$this->_startpoint = "http://www.bbc.co.uk/music/artists/b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d#artist";
 		//$this->_startpoint = "http://rdf.freebase.com/ns/m.07c0j";
-		//$this->_startpoint = "http://dbpedia.org/resource/The_Beatles";
+		$this->_startpoint = "http://dbpedia.org/resource/The_Beatles";
 
 		//setup store
 		$this->_store = $this->_getLocalStore('arc_bc');
@@ -45,27 +45,7 @@ class BCAjaxServer extends DBHelper
 					else {
 						$uri = $this->_startpoint;
 					}
-					$crawler = new Crawler();
-					$triples = $crawler->crawl($uri);
-					var_dump($triples);
-
-					//insert everthing into db
-					$n = count($triples);
-					if ($n) {
-						//$this->_store->reset(); //just if every crawl should start by 0
-						$this->_store->insert($triples, 'http://bandclash.net/ontology');
-						if ($errs = $this->_store->getErrors()) {
-							echo "Problems in Insert of aggregated triples: " . var_export($errs, true) . PHP_EOL;
-							//var_dump($triples);
-						}
-						else {
-							echo "Succesfully crawled " . $n . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
-							echo "These Sources were not crawled: " . $crawler->getUnhandledURIs . PHP_EOL;
-						}
-					}
-					else {
-						echo "Sadly nothing got crawled from &lt;" . $uri . "&gt;." . PHP_EOL;
-					}
+					$this->_crawlByArtist($uri);
 					break;
 
 				//reset and show result
@@ -94,7 +74,7 @@ class BCAjaxServer extends DBHelper
 						var_dump($errs);
 					}
 					else {
-						echo "<p>No errors by importing!</p>";	
+						echo "<p>No errors by importing!</p>";
 					}
 
 				// print all data in a table view
@@ -157,6 +137,53 @@ class BCAjaxServer extends DBHelper
 		}
 		return $triples;
 	}
+
+	private function _crawlByArtist($uri)
+	{
+		//use crawler to aggregate data
+		require_once('crawler.php');
+		$crawler = new Crawler();
+		$triples = $crawler->crawl($uri);
+		var_dump($triples);
+
+		//insert everthing into db
+		$n = count($triples);
+		if ($n) {
+			//$this->_store->reset(); //just if every crawl should start by 0
+
+			$this->_store->insert($triples, 'http://bandclash.net/ontology');
+
+			if ($errs = $this->_store->getErrors())
+			{
+				echo "Problems in Insert of aggregated triples: " . var_export($errs, true) . PHP_EOL;
+				//var_dump($triples);
+			}
+			else
+			{
+				echo "Succesfully crawled " . $n . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
+				echo "These Sources were not crawled: " . $crawler->getUnhandledURIs() . PHP_EOL;
+
+				//parse data from chartarchive.org
+				require_once('parser.php');
+				$bcp = new BCParser("http://chartarchive.org", "/a/");
+				$triples = $bcp->getChartsByArtist($uri);
+
+				$this->_store->insert($triples, 'http://bandclash.net/ontology');
+				if ($errs = $this->_store->getErrors())
+				{
+					echo "Problems in Insert of parsed triples: " . var_export($errs, true) . PHP_EOL;
+				}
+				else
+				{
+					echo "Succesfully parsed " . count($triples) . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
+				}
+			}
+		}
+		else {
+			echo "Sadly nothing got crawled from &lt;" . $uri . "&gt;." . PHP_EOL;
+		}
+	}
+					
 }
 
 //init server and run handler
