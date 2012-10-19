@@ -87,27 +87,6 @@ class BCAjaxServer extends DBHelper
 				//FIX: Move markup to client side
 				default:
 					$triples = $this->_fetchAll();
-					$n = count($triples);
-					if ($n) {
-						$r = '<p>The db contains ' . $n . ' Triples.</p>' . PHP_EOL;
-						$r .= '<table class="table table-striped table-condensed tfixed">' . PHP_EOL;
-						$r .= '<thead><tr><th>s</th><th>p</th><th>o</th></tr></thead>' . PHP_EOL;
-						$r .= '<tbody>' . PHP_EOL;
-						foreach ($triples as $row) {
-							$r .= '<tr>';
-							$r .= '<td>' . $row['s'] . '</td>';
-							$r .= '<td>' . $row['p'] . '</td>';
-							$r .= '<td>' . fixUtf8($row['o']) . '</td>';
-							$r .= '</tr>' . PHP_EOL;
-						}
-						$r .= '</tbody>' . PHP_EOL;
-						$r .= '</table>';
-						echo $r;
-					}
-					else
-					{
-						echo "Local store is empty!" . PHP_EOL;
-					}
 					break;
 			}
 		}
@@ -125,8 +104,29 @@ class BCAjaxServer extends DBHelper
 		$triples = $this->_store->query('SELECT ?s ?p ?o WHERE {?s ?p ?o}', 'rows');
 		if ($errs = $this->_store->getErrors()) {
 			var_dump($errs);
+		} 
+		else if ($n = count($triples))
+		{
+			$r = '<p>The db contains ' . $n . ' Triples.</p>' . PHP_EOL;
+			$r .= '<table class="table table-striped table-condensed tfixed">' . PHP_EOL;
+			$r .= '<thead><tr><th>s</th><th>p</th><th>o</th></tr></thead>' . PHP_EOL;
+			$r .= '<tbody>' . PHP_EOL;
+			foreach ($triples as $row) {
+				$r .= '<tr>';
+				$r .= '<td>' . $row['s'] . '</td>';
+				$r .= '<td>' . $row['p'] . '</td>';
+				$r .= '<td>' . fixUtf8($row['o']) . '</td>';
+				$r .= '</tr>' . PHP_EOL;
+			}
+			$r .= '</tbody>' . PHP_EOL;
+			$r .= '</table>';
+			echo $r;
 		}
-		return $triples;
+		else
+		{
+			echo "Local store is empty!" . PHP_EOL;
+		}
+		//return $triples;
 	}
 
 	/*
@@ -148,7 +148,7 @@ class BCAjaxServer extends DBHelper
 		$crawler = new Crawler();
 		$triples = $crawler->crawl($uri);
 
-		//insert everthing into db
+		/*/insert everthing into db
 		$n = count($triples);
 		if ($n) {
 			//$this->_store->reset(); //just if every crawl should start by 0
@@ -171,6 +171,10 @@ class BCAjaxServer extends DBHelper
 		else {
 			echo "Sadly nothing got crawled from &lt;" . $uri . "&gt;." . PHP_EOL;
 		}
+		*/
+		echo "<p>Show all data, result status unknown so far</p>";
+
+		$this->_fetchAll();
 	}
 
 	/**

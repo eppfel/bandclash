@@ -15,11 +15,11 @@ final class Crawler extends DBHelper
 
 	public function crawl($uri)
 	{
-		//testing
+		/*/testing
 		$this->fetchAll($uri);
-		return;
+		return;*/
 
-		/*/SameAsLinks
+		//SameAsLinks
 		$fringe = array();
 		$fringe = $this->fetchSameAs($uri);
 
@@ -35,7 +35,7 @@ final class Crawler extends DBHelper
 				}
 			}
 		}
-		return $triples; */
+		return $triples;
 	}
 
 	public function fetchSameAs($uri, $depth = 3, $fringe = array())
@@ -81,7 +81,7 @@ final class Crawler extends DBHelper
 				/**
 				 * Safe/simple query
 				 * !Activate completion of triples with URI before return statement
-				 */
+				 *
 				$q = 'SELECT ?p ?o WHERE { <'. $uri .'> ?p ?o . }';
 
 				$this->_queries[] = $q;
@@ -108,6 +108,7 @@ final class Crawler extends DBHelper
 				{
 					echo "No errors, but query returned empty response at" . $uri . " : " . $store->getErrors() . "/n" ;
 				}
+				*/
 			}
 			else //dbpedia
 			{
@@ -144,11 +145,9 @@ final class Crawler extends DBHelper
 				else if (isset($index['result']) && $index['result'])
 				{
 					 //TO FIX
-					$this->_getLocalStore('arc_bc')->insert($index['result'], 'http://bandclash.net/ontology');
-					//$triples = ARC2::getTriplesFromIndex($index['result']);
-					var_dump($this->_queries);
+					$result = $this->_getDefaultLocalStore()->insert($index['result'], 'http://bandclash.net/ontology');
 					
-					return ;//$triples;	
+					return $result;//$triples;	
 				}
 				else 
 				{
