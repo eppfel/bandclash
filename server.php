@@ -165,13 +165,15 @@ class BCAjaxServer extends DBHelper
 				echo "Succesfully crawled " . $n . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
 				echo "These Sources were not crawled: " . $crawler->getUnhandledURIs() . PHP_EOL;
 
-				//$this->_parseChartsByArtist($uri);
 			}
 		}
 		else {
 			echo "Sadly nothing got crawled from &lt;" . $uri . "&gt;." . PHP_EOL;
 		}
 		*/
+
+		$this->_parseChartsByArtist($uri);
+
 		echo "<p>Show all data, result status unknown so far</p>";
 
 		$this->_fetchAll();
@@ -179,6 +181,7 @@ class BCAjaxServer extends DBHelper
 
 	/**
 	 * parse data from chartarchive.org
+	 * FIX: get inferences from local store
 	 */
 	private function _parseChartsByArtist($uri)
 	{
