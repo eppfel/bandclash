@@ -8,19 +8,23 @@
       	<!--Band 1-->
       	<div class="span5">
       		<form class="pull-right">
-				<select id="band1"></select>
+				<select id="band1"><option value=0>Choose a band</option></select>
       		</form>
       		<div class="row">
       			<!--DESCRIPTION Band-->	
       			<div class="span3 txtaright">
-      				<h3>The Rolling Stones</h3>
-      				<p>
-      				The Rolling Stones sind eine 1962 gegründete englische Rockband. Die Band zählt zu den langlebigsten[1] und kommerziell erfolgreichsten[2] Gruppen in der Rockgeschichte.
-      				</p>
+      				<h3 id="bandtitle1">BAND 1</h3>
+      				<p id="summary1"></p>
+      				<dl class="dl-horizontal">
+  					<dt>Founded</dt>
+  					<dd id="datefound1"></dd>
+  					<dt>Members</dt>
+  					<dd id="NumMembers1"></dd>
+					</dl>
       			</div>
       			<!--IMAGE Band-->
       			<div class="span2">
-      				<img src="http://chartarchive.org/artwork/2167-300.jpg"/>
+      				<img id="bandimage1" src=""/>
       			</div>
 			</div>
       	</div>
@@ -31,19 +35,23 @@
       	<!--Band 2-->
 		<div class="span5">
 			<form>
-				<select id="band2"></select>
+				<select id="band2"><option value=0>Choose a band</option></select>
       		</form>
       		<div class="row">
       			<!--IMAGE Band-->
       			<div class="span2">
-      				<img src="http://chartarchive.org/artwork/2167-300.jpg"/>
+      				<img id="bandimage2" src=""/>
       			</div>
       			<!--DESCRIPTION Band-->	
       			<div class="span3 txtaleft">
-      				<h3>The Beatles</h3>
-      				<p>
-      				The Beatles waren eine britische Rockband in den 1960er Jahren. Mit mehr als 600 Millionen[1] – nach Schätzungen ihrer Plattenfirma EMI sogar mehr als einer Milliarde[2] – verkauften Tonträgern gehören sie zu den kommerziell erfolgreichsten Bands der Musikgeschichte.
-      				</p>
+      				<h3 id="bandtitle2">BAND 2</h3>
+      				<p id="summary2"></p>
+      				<dl class="dl-horizontal">
+  					<dt>Founded</dt>
+  					<dd id="datefound2"></dd>
+  					<dt>Members</dt>
+  					<dd id="NumMembers2"></dd>
+					</dl>
       			</div>
       		</div>
       	</div>
