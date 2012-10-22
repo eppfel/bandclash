@@ -38,16 +38,6 @@ class BCAjaxServer extends DBHelper
 					$triples = $this->_fetchArtists();
 					echo json_encode($triples);
 				break;
-				case 'crawl':
-					if (isset($_REQUEST['uri'])) {
-						$uri = $_REQUEST['uri'];
-					}
-					else {
-						$uri = $this->_startpoint;
-					}
-					$this->_crawlByArtist($uri);
-					break;
-
 				//reset and show result
 				case 'reset':
 					//empty store
@@ -83,10 +73,43 @@ class BCAjaxServer extends DBHelper
 						echo "<p>No errors by importing!</p>";
 					}
 
+				case 'crawl':
+					if (isset($_REQUEST['uri'])) {
+						$uri = $_REQUEST['uri'];
+					}
+					else {
+						$uri = $this->_startpoint;
+					}
+					$this->_crawlByArtist($uri);
+
+
+					echo "<p>Show all data, result status unknown so far</p>";
+
 				// print all data in a table view
 				//FIX: Move markup to client side
 				default:
 					$triples = $this->_fetchAll();
+					if ($n = count($triples))
+					{
+						$r = '<p>The db contains ' . $n . ' Triples.</p>' . PHP_EOL;
+						$r .= '<table class="table table-striped table-condensed tfixed">' . PHP_EOL;
+						$r .= '<thead><tr><th>s</th><th>p</th><th>o</th></tr></thead>' . PHP_EOL;
+						$r .= '<tbody>' . PHP_EOL;
+						foreach ($triples as $row) {
+							$r .= '<tr>';
+							$r .= '<td>' . $row['s'] . '</td>';
+							$r .= '<td>' . $row['p'] . '</td>';
+							$r .= '<td>' . fixUtf8($row['o']) . '</td>';
+							$r .= '</tr>' . PHP_EOL;
+						}
+						$r .= '</tbody>' . PHP_EOL;
+						$r .= '</table>';
+						echo $r;
+					}
+					else
+					{
+						echo "Local store is empty!" . PHP_EOL;
+					}
 					break;
 			}
 		}
@@ -105,28 +128,9 @@ class BCAjaxServer extends DBHelper
 		if ($errs = $this->_store->getErrors()) {
 			var_dump($errs);
 		} 
-		else if ($n = count($triples))
-		{
-			$r = '<p>The db contains ' . $n . ' Triples.</p>' . PHP_EOL;
-			$r .= '<table class="table table-striped table-condensed tfixed">' . PHP_EOL;
-			$r .= '<thead><tr><th>s</th><th>p</th><th>o</th></tr></thead>' . PHP_EOL;
-			$r .= '<tbody>' . PHP_EOL;
-			foreach ($triples as $row) {
-				$r .= '<tr>';
-				$r .= '<td>' . $row['s'] . '</td>';
-				$r .= '<td>' . $row['p'] . '</td>';
-				$r .= '<td>' . fixUtf8($row['o']) . '</td>';
-				$r .= '</tr>' . PHP_EOL;
-			}
-			$r .= '</tbody>' . PHP_EOL;
-			$r .= '</table>';
-			echo $r;
+		else {
+			return $triples;
 		}
-		else
-		{
-			echo "Local store is empty!" . PHP_EOL;
-		}
-		//return $triples;
 	}
 
 	/*
@@ -174,9 +178,6 @@ class BCAjaxServer extends DBHelper
 
 		$this->_parseChartsByArtist($uri);
 
-		echo "<p>Show all data, result status unknown so far</p>";
-
-		$this->_fetchAll();
 	}
 
 	/**
