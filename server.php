@@ -219,7 +219,6 @@ class BCAjaxServer extends DBHelper
 			echo "Succesfully parsed " . count($triples) . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
 		}
 	}			
->>>>>>> b77451003f207d450ae330fafb9bf160e3f2f467
 }
 
 //init server and run handler

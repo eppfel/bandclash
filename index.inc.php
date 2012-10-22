@@ -13,7 +13,7 @@
       		<div class="row">
       			<!--DESCRIPTION Band-->	
       			<div class="span3 txtaright">
-      				<h3 id="bandtitle1">The Rolling Stones</h3>
+      				<h3 id="bandtitle1">BAND 1</h3>
       				<p id="summary1"></p>
       				<dl class="dl-horizontal">
   					<dt>Founded</dt>
@@ -24,7 +24,7 @@
       			</div>
       			<!--IMAGE Band-->
       			<div class="span2">
-      				<img id="bandimage1" src="http://chartarchive.org/artwork/2167-300.jpg"/>
+      				<img id="bandimage1" src=""/>
       			</div>
 			</div>
       	</div>
@@ -40,11 +40,11 @@
       		<div class="row">
       			<!--IMAGE Band-->
       			<div class="span2">
-      				<img id="bandimage2" src="http://chartarchive.org/artwork/2167-300.jpg"/>
+      				<img id="bandimage2" src=""/>
       			</div>
       			<!--DESCRIPTION Band-->	
       			<div class="span3 txtaleft">
-      				<h3 id="bandtitle2">The Beatles</h3>
+      				<h3 id="bandtitle2">BAND 2</h3>
       				<p id="summary2"></p>
       				<dl class="dl-horizontal">
   					<dt>Founded</dt>
