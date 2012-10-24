@@ -8,9 +8,9 @@
       	<!--Band 1-->
       	<div class="span5">
       		<form class="pull-right">
-				<select id="band1"><option value=0>Choose a band</option></select>
+				<select id="selband1"><option value=0>Choose a band</option></select>
       		</form>
-      		<div class="row">
+      		<div class="row" id="band1">
       			<!--DESCRIPTION Band-->	
       			<div class="span3 txtaright">
       				<h3 id="bandtitle1">BAND 1</h3>
@@ -35,9 +35,9 @@
       	<!--Band 2-->
 		<div class="span5">
 			<form>
-				<select id="band2"><option value=0>Choose a band</option></select>
+				<select id="selband2"><option value=0>Choose a band</option></select>
       		</form>
-      		<div class="row">
+      		<div class="row" id="band2">
       			<!--IMAGE Band-->
       			<div class="span2">
       				<img id="bandimage2" src=""/>

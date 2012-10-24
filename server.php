@@ -48,6 +48,14 @@ class BCAjaxServer extends DBHelper
 					$triples = $this->_fetchBandDetails($uri);
 					echo json_encode($triples);
 					break;
+				case 'clash':
+					if(isset($_REQUEST['uri1'])&&isset($_REQUEST['uri2']))
+					{
+						$uri1 = $_REQUEST['uri1'];
+						$uri2 = $_REQUEST['uri2'];
+						clash($uri1, $uri2);	
+					}
+				break;	
 				//reset and show result
 				case 'reset':
 					//empty store
@@ -92,8 +100,6 @@ class BCAjaxServer extends DBHelper
 					}
 					$this->_crawlByArtist($uri);
 
-
-					break; //comment out to show all triples in the db
 					echo "<p>Show all data, result status unknown so far</p>";
 
 				// print all data in a table view
@@ -196,7 +202,6 @@ class BCAjaxServer extends DBHelper
 			echo "Sadly nothing got crawled from &lt;" . $uri . "&gt;." . PHP_EOL;
 		}
 		
-
 		$this->_parseChartsByArtist($uri); */
 
 	}
@@ -221,6 +226,11 @@ class BCAjaxServer extends DBHelper
 			echo "Succesfully parsed " . count($triples) . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
 		}
 	}			
+
+	private function clash($uri1, $uri2)
+	{
+		$triples = $this->_store->query('SELECT ?comment ?name ?depiction WHERE {<'.$uri.'> <http://www.w3.org/2000/01/rdf-schema#comment> ?comment. <'.$uri.'> <http://xmlns.com/foaf/0.1/name> ?name. <'.$uri.'> <http://dbpedia.org/ontology/thumbnail> ?depiction. FILTER (langMATCHES (LANG(?comment),"en"))}' ,'rows');
+	}
 }
 
 //init server and run handler
