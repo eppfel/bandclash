@@ -15,9 +15,9 @@ final class Crawler extends DBHelper
 
 	public function crawl($uri)
 	{
-		/*/testing
+		//testing
 		$this->fetchAll($uri);
-		return;*/
+		return;//*/
 
 		//SameAsLinks
 		$fringe = array();
@@ -112,19 +112,24 @@ final class Crawler extends DBHelper
 			}
 			else //dbpedia
 			{
-				//complex sparql request
+				/*/complex sparql request*/
 				$q = '
 					PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 					PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 					CONSTRUCT {
-					<'. $uri .'> ?p ?o . 
-					?s ?p2 <'. $uri .'> . 
-					?r <http://dbpedia.org/ontology/artist> <'. $uri .'> .
-					?r rdf:type ?rtype .
-					?r foaf:name ?rname . }
+						<'. $uri .'> ?p ?o . 
+						?s ?p2 <'. $uri .'> . 
+						?r <http://dbpedia.org/ontology/artist> <'. $uri .'> .
+						?r rdf:type ?rtype .
+						?r foaf:name ?rname .
+					}
 					WHERE { 
-						{ <'. $uri .'> ?p ?o . 
-						?s ?p2 <'. $uri .'> }
+						{
+							<'. $uri .'> ?p ?o .
+						}
+						UNION {
+							?s ?p2 <'. $uri .'> .
+						}
 						UNION {
 							?r <http://dbpedia.org/ontology/artist> <'. $uri .'> .
 							?r rdf:type ?rtype .
@@ -132,7 +137,7 @@ final class Crawler extends DBHelper
 						}
 					}';	
 
-				//* Query with construct statement without songs/
+				//* Query with construct statement without songs*/
 				//$q = 'CONSTRUCT { <'. $uri .'> ?p ?o . ?s2 ?p2 <'. $uri .'> } WHERE { {<'. $uri .'> ?p ?o } UNION { ?s2 ?p2 <'. $uri .'> . } }';
 
 				$this->_queries[] = $q;
@@ -145,8 +150,20 @@ final class Crawler extends DBHelper
 				else if (isset($index['result']) && $index['result'])
 				{
 					 //TO FIX
-					$result = $this->_getDefaultLocalStore()->insert($index['result'], 'http://bandclash.net/ontology');
-					
+
+					//$ser = ARC2::getNTriplesSerializer();
+					//$triples = $ser->getSerializedIndex($index['result']);
+
+					$triples = ARC2::getTriplesFromIndex($index['result']);
+					$result = $this->_getDefaultLocalStore()->insert($triples, "http://bandclash.net/ontology");
+
+					//var_dump($index);
+					var_dump($triples);
+					//var_dump($result);
+
+					if ($errs = $this->_getDefaultLocalStore()->getErrors()) {
+						var_dump($errs);
+					}
 					return $result;//$triples;	
 				}
 				else 

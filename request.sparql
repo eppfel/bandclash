@@ -1,4 +1,53 @@
 CONSTRUCT {
+	<http://dbpedia.org/resource/The_Beatles> ?p ?o .
+	?s2 ?p2 <http://dbpedia.org/resource/The_Beatles>
+}
+WHERE {
+	{<http://dbpedia.org/resource/The_Beatles> ?p ?o } 
+	UNION { ?s2 ?p2 <http://dbpedia.org/resource/The_Beatles> . }
+}
+
+### 12-10-18 ###
+
+CONSTRUCT {
+	?s ?p ?o . 
+	?s2 ?p2 ?o2 . 
+	?r ?rp ?ro .
+}
+WHERE { 
+	{
+		<http://dbpedia.org/resource/The_Beatles> ?p ?o . 
+		?s2 ?p2 <http://dbpedia.org/resource/The_Beatles>
+	}
+	UNION {
+		?r <http://dbpedia.org/ontology/artist> <http://dbpedia.org/resource/The_Beatles> .
+		?r rdf:type ?rtype .
+		?r foaf:name ?rname .
+	}
+}
+
+### 12-10-18 ###
+
+CONSTRUCT {
+	<http://dbpedia.org/resource/The_Beatles> ?p ?o . 
+	?s ?p2 <http://dbpedia.org/resource/The_Beatles> . 
+	?song ?psong ?osong .
+                ?ssong ?p2song ?song .
+}
+WHERE { 
+	{ <http://dbpedia.org/resource/The_Beatles> ?p ?o . 
+	?s ?p2 <http://dbpedia.org/resource/The_Beatles> }
+	UNION {
+		?song <http://dbpedia.org/ontology/artist> <http://dbpedia.org/resource/The_Beatles> .
+		?song ?psong ?osong .
+                ?ssong ?p2song ?song .
+	}
+}
+-> Problems in Insert of aggregated triples: array ( 0 => 'too many loops: 501. Could not parse " rdf:type ns3:1966Songs , ns3:Drug-relatedSongs , ..." in ARC2_StoreTurtleLoader via ARC2_StoreLoadQueryHandler', ) array(27946) { 
+
+### 12-??-?? ###
+
+CONSTRUCT {
 	<$uri> ?p ?o . 
 	?s ?p2 ≤$uri> . 
 	?song ?psong ?osong
@@ -21,18 +70,3 @@ WHERE {
 UNION { <http://dbpedia.org/resource/The_Rolling_Stones> ?p2 ?o2 }
 }
 
-CONSTRUCT {
-	<http://dbpedia.org/resource/The_Beatles> ?p ?o . 
-	?s ?p2 <http://dbpedia.org/resource/The_Beatles> . 
-	?song ?psong ?osong .
-                ?ssong ?p2song ?song .
-}
-WHERE { 
-	{ <http://dbpedia.org/resource/The_Beatles> ?p ?o . 
-	?s ?p2 <http://dbpedia.org/resource/The_Beatles> }
-	UNION {
-		?song <http://dbpedia.org/ontology/artist> <http://dbpedia.org/resource/The_Beatles> .
-		?song ?psong ?osong .
-                ?ssong ?p2song ?song .
-	}
-}

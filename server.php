@@ -93,6 +93,7 @@ class BCAjaxServer extends DBHelper
 					$this->_crawlByArtist($uri);
 
 
+					break; //comment out to show all triples in the db
 					echo "<p>Show all data, result status unknown so far</p>";
 
 				// print all data in a table view
@@ -194,9 +195,9 @@ class BCAjaxServer extends DBHelper
 		else {
 			echo "Sadly nothing got crawled from &lt;" . $uri . "&gt;." . PHP_EOL;
 		}
-		*/
+		
 
-		$this->_parseChartsByArtist($uri);
+		$this->_parseChartsByArtist($uri); */
 
 	}
 
