@@ -53,7 +53,8 @@ class BCAjaxServer extends DBHelper
 					{
 						$uri1 = $_REQUEST['uri1'];
 						$uri2 = $_REQUEST['uri2'];
-						clash($uri1, $uri2);	
+						$triples = $this->_clash($uri1, $uri2);	
+						echo json_encode($triples);
 					}
 				break;	
 				//reset and show result
@@ -228,9 +229,12 @@ class BCAjaxServer extends DBHelper
 			echo "Succesfully parsed " . count($triples) . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
 		}
 	}			
-	private function clash($uri1, $uri2)
+	private function _clash($uri1, $uri2)
 	{
-		$triples = $this->_store->query('SELECT ?comment ?name ?depiction WHERE {<'.$uri.'> <http://www.w3.org/2000/01/rdf-schema#comment> ?comment. <'.$uri.'> <http://xmlns.com/foaf/0.1/name> ?name. <'.$uri.'> <http://dbpedia.org/ontology/thumbnail> ?depiction. FILTER (langMATCHES (LANG(?comment),"en"))}' ,'rows');
+		$query = 'SELECT ?comment ?name ?depiction ?yearsActive ?bandMembers WHERE {<'.$uri1.'> <http://www.w3.org/2000/01/rdf-schema#comment> ?comment. <'.$uri1.'> <http://xmlns.com/foaf/0.1/name> ?name. <'.$uri1.'> <http://dbpedia.org/ontology/thumbnail> ?depiction. <'.$uri1.'> <http://dbpedia.org/property/yearsActive> ?yearsActive. <'.$uri1.'> <http://dbpedia.org/ontology/bandMembers> ?bandMembers FILTER (langMATCHES (LANG(?comment),"en"))}';
+		echo $query;
+		$triples = $this->_store->query( $query,'rows');
+
 	}
 }
 
