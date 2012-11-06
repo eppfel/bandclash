@@ -13,6 +13,7 @@
               <option value="http://www.bbc.co.uk/music/artists/8f92558c-2baa-4758-8c38-615519e9deda#artist">The Clash (@bbc)</option>
               <option value="http://dbpedia.org/resource/Led_Zeppelin">Led Zeppelin (@dbpedia)</option>
               <option value="http://www.bbc.co.uk/music/artists/678d88b2-87b0-403b-b63d-5da7465aecc3#artist">Led Zeppelin (@bbc)</option>
+              <option value="http://dbpedia.org/resource/Oasis_(band)">Oasis (@dbpedia)</option>
               <option value="http://dbpedia.org/resource/The_Rolling_Stones">The Rolling Stones (@dbpedia)</option>
               <option value="http://www.bbc.co.uk/music/artists/b071f9fa-14b0-4217-8e97-eb41da73f598#artist">The Rolling Stones (@bbc)</option>
               <option value="http://dbpedia.org/resource/U2">U2 (@dbpedia)</option>
