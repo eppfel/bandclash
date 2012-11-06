@@ -112,7 +112,7 @@ final class Crawler extends DBHelper
 			}
 			else //dbpedia
 			{
-				//complex sparql request
+				/*/complex sparql request
 				$q = '
 					PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 					PREFIX foaf: <http://xmlns.com/foaf/0.1/>
@@ -132,8 +132,8 @@ final class Crawler extends DBHelper
 						}
 					}';	
 
-				//* Query with construct statement without songs/
-				//$q = 'CONSTRUCT { <'. $uri .'> ?p ?o . ?s2 ?p2 <'. $uri .'> } WHERE { {<'. $uri .'> ?p ?o } UNION { ?s2 ?p2 <'. $uri .'> . } }';
+				//* Query with construct statement without songs*/
+				$q = 'CONSTRUCT { <'. $uri .'> ?p ?o . ?s2 ?p2 <'. $uri .'> } WHERE { {<'. $uri .'> ?p ?o } UNION { ?s2 ?p2 <'. $uri .'> . } }';
 
 				$this->_queries[] = $q;
 

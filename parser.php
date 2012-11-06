@@ -168,7 +168,28 @@ class BCParser extends DBHelper
 							$triple['s'] 		= $releaseURI;
 							$triple['s type'] 	= "uri";
 							$triples[] = $triple;
-					   	}
+				   		}
+						array_push($triples, array('s' => $releaseURI,
+													's type' => "uri",
+													"p" => "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+													"p type" => "uri",
+													"o type" => "literal",
+													"o" => $releaseType));
+
+						array_push($triples, array('s' => $releaseURI,
+													's type' => "uri",
+													"p" => "http://xmlns.com/foaf/0.1/name",
+													"p type" => "uri",
+													"o type" => "literal",
+													"o" => addslashes($releaseName),
+													"o lang" => "en"));
+
+						array_push($triples, array('s' => $releaseURI,
+													's type' => "uri",
+													"p" => "http://dbpedia.org/property/artist",
+													"p type" => "uri",
+													"o type" => "uri",
+													"o" => $artistURI));
 				   	}
 				   	
 				}
