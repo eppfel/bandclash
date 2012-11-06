@@ -158,7 +158,7 @@ final class Crawler extends DBHelper
 					$result = $this->_getDefaultLocalStore()->insert($triples, "http://bandclash.net/ontology");
 
 					//var_dump($index);
-					var_dump($triples);
+					//var_dump($triples);
 					//var_dump($result);
 
 					if ($errs = $this->_getDefaultLocalStore()->getErrors()) {
