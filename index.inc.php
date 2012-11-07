@@ -3,62 +3,74 @@
         <h1>Bandclash</h1>
         <p>Choose your bands!</p>
       </div>
-      <!--Choose your bands here-->
+
+      <!--BEGIN: Bandsheader-->
       <div class="row">
-      	<!--Band 1-->
-      	<div class="span5">
+
+      	<!--Band left-->
+      	<div class="span5 bleft">
       		<form class="pull-right">
-				<select id="selband1"><option value=0>Choose a band</option></select>
+				    <select class="selband"><option value=0>Choose a band</option></select>
       		</form>
-      		<div class="row" id="band1">
-      			<!--DESCRIPTION Band-->	
+          
+          <!--DESCRIPTION Band--> 
+      		<div class="row band" style="display: none; ">
       			<div class="span3 txtaright">
-      				<h3 id="bandtitle1">BAND 1</h3>
-      				<p id="summary1"></p>
+      				<h3 class="bandtitle">BAND 1</h3>
+      				<p class="summary"></p>
       				<dl class="dl-horizontal">
-  					<dt>Founded</dt>
-  					<dd id="datefound1"></dd>
-  					<dt>Members</dt>
-  					<dd id="NumMembers1"></dd>
-					</dl>
+      					<dt>Formed</dt>
+      					<dd class="formed"></dd>
+      					<dt>Members</dt>
+      					<dd class="members"></dd>
+    					</dl>
       			</div>
       			<!--IMAGE Band-->
       			<div class="span2">
-      				<img id="bandimage1" src=""/>
+      				<img class="bandimage" src=""/>
       			</div>
-			</div>
+          </div>
       	</div>
-     	<!--CLASH!-->
+
+     	  <!--CLASH BUTTON!-->
       	<div class="span2">
       		<button class="btn btn-danger" style="width:100%; height:100px;">CLASH!</button>
       	</div>
-      	<!--Band 2-->
-		<div class="span5">
-			<form>
-				<select id="selband2"><option value=0>Choose a band</option></select>
+
+      	<!--Band right-->
+      	<div class="span5 bright">
+      		<form>
+      			<select class="selband"><option value=0>Choose a band</option></select>
       		</form>
-      		<div class="row" id="band2">
+
+          <!--DESCRIPTION Band--> 
+      		<div class="row band" style="display: none; ">
       			<!--IMAGE Band-->
       			<div class="span2">
-      				<img id="bandimage2" src=""/>
+      				<img class="bandimage" src=""/>
       			</div>
-      			<!--DESCRIPTION Band-->	
       			<div class="span3 txtaleft">
-      				<h3 id="bandtitle2">BAND 2</h3>
-      				<p id="summary2"></p>
+      				<h3 class="bandtitle">BAND RIGHT</h3>
+      				<p class="summary"></p>
       				<dl class="dl-horizontal">
-  					<dt>Founded</dt>
-  					<dd id="datefound2"></dd>
-  					<dt>Members</dt>
-  					<dd id="NumMembers2"></dd>
-					</dl>
+      					<dt>Formed</dt>
+      					<dd class="formed"></dd>
+      					<dt>Members</dt>
+      					<dd class="members"></dd>
+  				   </dl>
       			</div>
       		</div>
+
       	</div>
-    </div>
-    <div style="clear:both;">&nbsp;</div>
-	<div class="row">
-      	<div class="span5 txtaright">BAND 1</div>
-      	<div class="span2 txtacenter">Ergebnisse</div>
-      	<div class="span5 txtaleft">BAND 2</div>
-    </div>
+
+      </div>
+      <!--END: Bandsheader-->
+
+      <div style="clear:both;">&nbsp;</div>
+
+      <!--BEGIN: SCORE-->
+      <div class="row">
+          	<div class="span5 txtaright">BAND 1</div>
+          	<div class="span2 txtacenter">Score</div>
+          	<div class="span5 txtaleft">BAND 2</div>
+      </div>

@@ -167,11 +167,19 @@ class BCAjaxServer extends DBHelper
 
 	private function _fetchBandDetails($uri)
 	{
-		$triples = $this->_store->query('SELECT ?comment ?name ?depiction WHERE {<'.$uri.'> <http://www.w3.org/2000/01/rdf-schema#comment> ?comment. <'.$uri.'> <http://xmlns.com/foaf/0.1/name> ?name. <'.$uri.'> <http://dbpedia.org/ontology/thumbnail> ?depiction. FILTER (langMATCHES (LANG(?comment),"en"))}' ,'rows');
+		$result = $this->_store->query("SELECT ?comment ?name ?depiction ?formed WHERE {<$uri> <http://www.w3.org/2000/01/rdf-schema#comment> ?comment . <$uri> <http://xmlns.com/foaf/0.1/name> ?name. <$uri> <http://dbpedia.org/ontology/thumbnail> ?depiction . FILTER (langMATCHES (LANG(?comment),'en')) OPTIONAL { <$uri>  <http://purl.org/vocab/bio/0.1/date>  ?formed }}" ,'rows');
+		if ($result) $details = $result[0];
+		else return 'query failed : ' . $this->_store->getErrors();
+		$members = $this->_store->query('SELECT ?member WHERE {<'.$uri.'> <http://dbpedia.org/ontology/bandMember> ?member }' ,'rows');
+		//$members = $this->_store->query('SELECT ?member WHERE {<'.$uri.'> <http://dbpedia.org/ontology/bandMember> ?m . ?m  <http://xmlns.com/foaf/0.1/name> ?member}' ,'rows');
+		$details['members'] = array();
+		foreach ($members as $member) {
+			$details['members'][] = $member['member'];
+		};
 		if ($errs = $this->_store->getErrors()) {
-			$triples[]=$errs;
+			return $errs;
 		}
-		return $triples;
+		return $details;
 	}
 
 	private function _crawlByArtist($uri)

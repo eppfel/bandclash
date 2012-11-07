@@ -2,67 +2,36 @@
 basic logic for interface
 */
 $(document).ready(function(){
+  $.getJSON('server.php?action=onload', addbands);	
 
-$.getJSON('server.php?action=onload', addbands);	
-$('#band1').hide();
-$('#band2').hide();
+  $('.selband').change(function(){
+    var sel = $(this);
+    console.log(sel.val());
+    if(sel.val()!=0){
+      sel.children('option:selected').each(function(){
+          var opt = $(this);
+          updateBand(opt.parents('.bleft').length ? '.bleft' : '.bright', opt.val());
+      });
+    }
+  });
 
-console.log('Ab gehts');
-
- });
+});
 
 function addbands(data){
-   console.log(data);
    $.each(data, function(i, item) {
-      $("<option/>").val(item.uri).text(item.name).appendTo("#selband1");
-      $("<option/>").val(item.uri).text(item.name).appendTo("#selband2");
+      $("<option/>").val(item.uri).text(item.name).appendTo(".selband");
    });
 }
-
-$('#selband1').change(function(){
-   console.log($(this).val());
-   if($(this).val()!=0){
-    $('#selband1 option:selected').each(function(){
-        updateBand(0, $(this).val());
-    });
-}
-});
-
-$('#selband2').change(function(){
-  if($(this).val()!=0){
-    $('#selband2 option:selected').each(function(){
-       updateBand(1, $(this).val());
-    });
-  }
-});
-
-
 
 function updateBand(side, uri)
 {
  	$.post('server.php', { action: "updateBand", uri: uri }, function (data){
-    //console.log(data);
-   if(side==0){
-   data = $.parseJSON(data);
-    $.each(data, function(i, item) {
-      $('#bandtitle1').text(item.name);
-      $('#summary1').text(item.comment);
-      $('#bandimage1').attr('src', item.depiction);
-      $('#band1').show();
-      //console.log(item.name+" "+item.comment+" "+item.depiction);
-    });
-  }
-  else if(side==1){
-   data = $.parseJSON(data);
-    $.each(data, function(i, item) {
-      $('#bandtitle2').text(item.name);
-      $('#summary2').text(item.comment);
-      $('#bandimage2').attr('src', item.depiction);
-      $('#band2').show();
-      //console.log(item.name+" "+item.comment+" "+item.depiction);
-    });
-  }
-
+    data = $.parseJSON(data);
+    $(side + ' .bandtitle').text(data.name);
+    $(side + ' .summary').text(data.comment);
+    $(side + ' .bandimage').attr('src', data.depiction);
+    $(side + ' .members').text(data.members.join(', '));
+    $(side + ' > .band').show();
   });
 }
 
