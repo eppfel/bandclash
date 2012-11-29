@@ -141,14 +141,14 @@ class BCParser extends DBHelper
 
 							case 4:
 								$triple_temp["p type"] = "uri";
-								$triple_temp["p"] = "http://www.bandclash.net/ontology#chartAppearances";
+								$triple_temp["p"] = "http://www.bandclash.net/ontology#chartPeak";
 								$triple_temp["o type"] = "literal";
 								$triple_temp["o"] = $element->plaintext;
 								break;	
 
 							case 5:
 								$triple_temp["p type"] = "uri";
-								$triple_temp["p"] = "http://www.bandclash.net/ontology#chartPeak";
+								$triple_temp["p"] = "http://www.bandclash.net/ontology#chartAppearances";
 								$triple_temp["o type"] = "literal";
 								$triple_temp["o"] = $element->plaintext;
 								break;	
