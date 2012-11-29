@@ -6,12 +6,25 @@ $(document).ready(function(){
 
   $('.selband').change(function(){
     var sel = $(this);
-    console.log(sel.val());
+    //console.log(sel.val());
     if(sel.val()!=0){
       sel.children('option:selected').each(function(){
           var opt = $(this);
           updateBand(opt.parents('.bleft').length ? '.bleft' : '.bright', opt.val());
       });
+    }
+  });
+
+  $('.btn-danger').click(function(){
+    var sel = $('.selband');
+    if(sel.val()!=0){
+          var uris = new Array();
+      sel.children('option:selected').each(function(){
+          var opt = $(this);
+          uris.push(opt.val());
+          console.log(uris);
+      });
+          clash(uris);
     }
   });
 
@@ -35,15 +48,17 @@ function updateBand(side, uri)
   });
 }
 
-function clash(uri1, uri2)
+function clash(uris)
 {
-  $.post('server.php', {action: "clash", uri1: uri1, uri2: uri2}, function (data)
+  console.log(uris[0] + " " +uris[1]);
+  $.post('server.php', {action: "clash", uri1: uris[0], uri2: uris[1]}, function (data)
   {
-    $.each(data, function(i, item) {
-      $('#bandtitle1').text(item.name);
-      $('#summary1').text(item.comment);
-      $('#bandimage1').attr('src', item.depiction);
-      //console.log(item.name+" "+item.comment+" "+item.depiction);
-    });
+    console.log(data);
+   //$.each(data, function(i, item) {
+     // $('#bandtitle1').text(item.name);
+     // $('#summary1').text(item.comment);
+     // $('#bandimage1').attr('src', item.depiction);
+     // console.log(item.name+" "+item.comment+" "+item.depiction);
+    //});
   });
 }
