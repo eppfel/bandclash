@@ -198,6 +198,16 @@ class BCAjaxServer extends DBHelper
 	 */
 	private function _parseChartsByArtist($uri)
 	{
+		if (parse_url($uri, PHP_URL_HOST) != 'dbpedia.org') {
+			$query = 'SELECT ?uri WHERE {<'.$uri.'> <http://www.w3.org/2002/07/owl#sameAs> ?uri . }';
+			$result = $this->_store->query( $query,'rows');
+			foreach ($result as $row) {
+				if (parse_url($row["uri"], PHP_URL_HOST) == 'dbpedia.org') {
+					$uri = $row["uri"];
+					break;
+				}
+			}
+		}
 		require_once('parser.php');
 		$bcp = new BCParser("http://chartarchive.org", "/a/");
 		$triples = $bcp->getChartsByArtist($uri);

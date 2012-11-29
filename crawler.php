@@ -15,7 +15,7 @@ final class Crawler extends DBHelper
 
 	public function crawl($uri)
 	{
-		//testing
+		/*/testing
 		$this->fetchAll($uri);
 		return;//*/
 
