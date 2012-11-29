@@ -211,7 +211,7 @@ class BCAjaxServer extends DBHelper
 		{
 			echo "Succesfully parsed " . count($triples) . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
 		}
-	}		
+	}
 	
 	private function _clash($uri1, $uri2)
 	{
