@@ -34,8 +34,9 @@ final class Crawler extends DBHelper
 					$triples = array_merge($triples, $storeTriples);	
 				}
 			}
+			return $triples;
 		}
-		return $triples;
+		return;
 	}
 
 	public function fetchSameAs($uri, $depth = 3, $fringe = array())

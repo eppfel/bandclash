@@ -84,13 +84,14 @@ class BCAjaxServer extends DBHelper
 
 				case 'import':
 					//query store
-					$this->_store->query("LOAD <http://bandclash/ontology/bandclash_inferred.owl>");
+					$this->_store->query("LOAD <http://bandclash/ontology/inferred_test.owl>");
 					if ($errs = $this->_store->getErrors()) {
 						var_dump($errs);
 					}
 					else {
 						echo "<p>No errors by importing!</p>";
 					}
+					break;
 
 				case 'crawl':
 					if (isset($_REQUEST['uri'])) {
@@ -100,6 +101,7 @@ class BCAjaxServer extends DBHelper
 						$uri = $this->_startpoint;
 					}
 					$this->_crawlByArtist($uri);
+					
 
 					echo "<p>Show all data, result status unknown so far</p>";
 
