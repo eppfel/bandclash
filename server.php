@@ -228,12 +228,15 @@ class BCAjaxServer extends DBHelper
 	private function _clash($uri1, $uri2)
 	{
 	$query = 'SELECT * WHERE {?releaseID <http://dbpedia.org/property/artist> <'.$uri1.'> . ?releaseID <http://xmlns.com/foaf/0.1/name> ?name . ?releaseID <http://www.bandclash.net/ontology#chartPeak> ?chartPeak FILTER(?chartPeak="1")}';
-	$triples1 = $this->_store->query( $query,'rows');
-	$peak[1] = count($triples1);
+	$bandData1 = $this->_store->query( $query,'rows');
+	$peak['peakleft'] = count($bandData1);
 	$query = 'SELECT * WHERE {?releaseID <http://dbpedia.org/property/artist> <'.$uri2.'> . ?releaseID <http://xmlns.com/foaf/0.1/name> ?name . ?releaseID <http://www.bandclash.net/ontology#chartPeak> ?chartPeak FILTER(?chartPeak="1")}';
-	$triples2 = $this->_store->query( $query,'rows');
-	$peak[2] = count($triples2);
-	$results[0]=$peak;
+	$bandData2 = $this->_store->query( $query,'rows');
+	$peak['peakright'] = count($bandData2);
+	if($peak['peakleft']>$peak['peakright']) $peak['result']=0; else if($peak['peakleft']=$peak['peakright']) $peak['result']=2; else $peak['result']=1;
+	$results['numberone']=$peak;
+	$results['band1'] = $bandData1;
+	$results['band2'] = $bandData2;
 
 	return $results;
 	}
