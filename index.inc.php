@@ -60,15 +60,23 @@
       <!--END: Bandsheader-->
       <div style="clear:both;">&nbsp;</div>
       <!--BEGIN: SCORE-->
-        <div class="peak row">
-              <div class="bleft span5 txtaright">!wert</div>
-              <div class="span2 txtacenter">#1 Charthits</div>
-              <div class="bright span5 txtaleft">!wert</div>
+      <div id="results">
+        <div class="no1hits row">
+          <div class="bleft span5 txtaright">
+            <h3>#</h3>
+          </div>
+          <div class="span2 txtacenter"><h3>#1 Charthits</h3></div>
+          <div class="bright span5 txtaleft">
+            <h3>#</h3>
+          </div>
         </div>
-        <div class"row release">
-              <div class="bleft  span5 txtaright">!wert</div>
-              <div class="span2 txtacenter">&nbsp;</div>
-              <div class="bright span5 txtaleft">!wert</div>
-        
+        <div class="allhits row">
+          <div class="bleft span5 txtaright">
+            <h3>#</h3>
+          </div>
+          <div class="span2 txtacenter">All charted Hits</div>
+          <div class="bright span5 txtaleft">
+            <h3>#</h3>
+          </div>
         </div>
       </div>

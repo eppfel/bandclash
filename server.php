@@ -224,21 +224,38 @@ class BCAjaxServer extends DBHelper
 			echo "Succesfully parsed " . count($triples) . " data triples from &lt;" . $uri . "&gt;." . PHP_EOL;
 		}
 	}
+
+	private function _no1hits($uri) {
+		$query = 'SELECT * WHERE {?releaseID <http://dbpedia.org/property/artist> <'.$uri.'> . ?releaseID <http://xmlns.com/foaf/0.1/name> ?name . ?releaseID <http://www.bandclash.net/ontology#chartPeak> ?chartPeak OPTIONAL {?releaseID <http://xmlns.com/foaf/0.1/thumbnail> ?thumb} FILTER(?chartPeak="1")}';
+		$hits = $this->_store->query($query, 'rows');
+		return $hits;
+	}
 	
 	private function _clash($uri1, $uri2)
 	{
-	$query = 'SELECT * WHERE {?releaseID <http://dbpedia.org/property/artist> <'.$uri1.'> . ?releaseID <http://xmlns.com/foaf/0.1/name> ?name . ?releaseID <http://www.bandclash.net/ontology#chartPeak> ?chartPeak FILTER(?chartPeak="1")}';
-	$bandData1 = $this->_store->query( $query,'rows');
-	$peak['peakleft'] = count($bandData1);
-	$query = 'SELECT * WHERE {?releaseID <http://dbpedia.org/property/artist> <'.$uri2.'> . ?releaseID <http://xmlns.com/foaf/0.1/name> ?name . ?releaseID <http://www.bandclash.net/ontology#chartPeak> ?chartPeak FILTER(?chartPeak="1")}';
-	$bandData2 = $this->_store->query( $query,'rows');
-	$peak['peakright'] = count($bandData2);
-	if($peak['peakleft']>$peak['peakright']) $peak['result']=0; else if($peak['peakleft']=$peak['peakright']) $peak['result']=2; else $peak['result']=1;
-	$results['numberone']=$peak;
-	$results['band1'] = $bandData1;
-	$results['band2'] = $bandData2;
+		$bandData = $this->_no1hits($uri1);
+		$peak['peakleft'] = count($bandData);
+		$results['band1'] = $bandData;
 
-	return $results;
+		$bandData = $this->_no1hits($uri2);
+		$peak['peakright'] = count($bandData);
+		$results['band2'] = $bandData;
+
+		if($peak['peakleft'] > $peak['peakright'])
+		{
+			$peak['result'] = 0;
+		}
+		else if($peak['peakleft'] == $peak['peakright'])
+		{
+			$peak['result'] = 2;	
+		}
+		else 
+		{
+			$peak['result'] = 1;
+		}
+		$results['numberone'] = $peak;
+
+		return $results;
 	}
 }
 

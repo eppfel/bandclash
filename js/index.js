@@ -1,6 +1,9 @@
 /* Author: Felix Epp, Thomas Grah
 basic logic for interface
 */
+var releaseNode;
+var side;
+
 $(document).ready(function(){
   $.getJSON('server.php?action=onload', addbands);  
   $('#results').hide();
@@ -17,21 +20,23 @@ $(document).ready(function(){
   $('.btn-danger').click(function(){
     var sel = $('.selband');
     if(sel.val()!=0){
-          var uris = new Array();
+      var uris = new Array();
       sel.children('option:selected').each(function(){
-          var opt = $(this);
-          uris.push(opt.val());
-          console.log(uris);
-      });
-          clash(uris);
+        var opt = $(this);
+        uris.push(opt.val());
+        console.log(uris);
+       });
+      clash(uris);
     }
   });
 });
+
 function addbands(data){
    $.each(data, function(i, item) {
       $("<option/>").val(item.uri).text(item.name).appendTo(".selband");
    });
 }
+
 function updateBand(side, uri)
 {
   $('#results').hide();
@@ -44,36 +49,39 @@ function updateBand(side, uri)
     $(side + ' > .band').show();
   });
 }
+
+function addReleases(i, release) {
+
+  releaseNode.clone().text(release.name).append('<img src="' + release.thumb + '" />').appendTo('.no1hits ' + side);
+}
+
 function clash(uris)
 {
-  console.log(uris[0] + " " +uris[1]);
+  console.log(uris[0] + " " + uris[1]);
   $.post('server.php', {action: "clash", uri1: uris[0], uri2: uris[1]}, function (data)
   {
     data = $.parseJSON(data);
-    console.log(data);
-   $.each(data, function(i, item) {
-     $('.peak .bleft').text(item.peakleft);
-     $('.peak .bright').text(item.peakright);
-     if(item.result==0)
-     {
-        $('.peak .bleft').css("color", "#f00");
-     }else{
-        $('.peak .bright').css("color", "#f00");
-     }     
-    });
-   text1 = "";
-   $.each(data.band1, function(i, release) {
-      console.log(release.name);
-      text1 +=  release.name + '<br>';
-      $('.release .bleft ').text = text1;
-      });
-  text2 = "";
-  
-   $.each(data.band2, function(i, release) {
-      console.log(release.name);
-      text2 +=  release.name + '<br>';
-      $('.release .bright').text = text2;
-      });
-   $('#results').show();
+
+    var no1result = data.numberone;
+    var lefty = $('.no1hits .bleft h3').text(no1result.peakleft);
+    var rigthy = $('.no1hits .bright h3').text(no1result.peakright);
+    if(no1result.result == 0)
+    {
+      lefty.parent().addClass('winner');
+    }
+    else if (no1result.result == 1)
+    {
+      righty.parent().addClass('winner');
+    };
+
+    $('.release').detach();
+    releaseNode = $('<div class="release"></div>');
+    side = '.bleft';
+    $.each(data.band1, addReleases);
+
+    side = '.bright';
+    $.each(data.band2, addReleases);
+
+    $('#results').show();
   });
 }
