@@ -19,7 +19,7 @@
               <option value="http://dbpedia.org/resource/U2">U2 (@dbpedia)</option>
               <option value="http://www.bbc.co.uk/music/artists/a3cb23fc-acd3-4ce0-8f36-1e5aa6a18432#artist">U2 (@bbc)</option>
               <option value="http://dbpedia.org/resource/The_Who">The Who (@dbpedia)</option>
-              <option value="http://www.bbc.co.uk/music/artists/9fdaa16b-a6c4-4831-b87c-bc9ca8ce7eaa">The Who (@bbc)</option>
+              <option value="http://www.bbc.co.uk/music/artists/9fdaa16b-a6c4-4831-b87c-bc9ca8ce7eaa#artist">The Who (@bbc)</option>
               <!-- Pink Floyd throws error by inserting uri "http://dbpedia.org/class/yago/PeopleFromDeal,Kent" <option value="http://dbpedia.org/resource/Pink_Floyd">Pink Floyd (@dbpedia)</option>
               <option value="http://www.bbc.co.uk/music/artists/83d91898-7763-47d7-b03b-b92132375c47#artist">Pink Floyd (@bbc)</option>-->
             </select>
