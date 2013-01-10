@@ -1,8 +1,4 @@
-<!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="hero-unit">
-        <h1>Bandclash</h1>
-        <p>Choose your bands!</p>
-      </div>
+
       <!--BEGIN: Bandsheader-->
       <div class="row">
         <!--Band left-->
@@ -31,7 +27,7 @@
         </div>
         <!--CLASH BUTTON!-->
         <div class="span2">
-          <button class="btn btn-danger" style="width:100%; height:100px;">CLASH!</button>
+          <div class="clash">&nbsp;</div>
         </div>
         <!--Band right-->
         <div class="span5 bright">

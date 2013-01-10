@@ -17,7 +17,7 @@ $(document).ready(function(){
       });
     }
   });
-  $('.btn-danger').click(function(){
+  $('.clash').click(function(){
     var sel = $('.selband');
     if(sel.val()!=0){
       var uris = new Array();
@@ -64,7 +64,8 @@ function clash(uris)
 
     var no1result = data.numberone;
     var lefty = $('.no1hits .bleft h3').text(no1result.peakleft);
-    var rigthy = $('.no1hits .bright h3').text(no1result.peakright);
+    var righty = $('.no1hits .bright h3').text(no1result.peakright);
+    $('div.winner').removeClass('winner');
     if(no1result.result == 0)
     {
       lefty.parent().addClass('winner');

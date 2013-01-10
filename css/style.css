@@ -57,7 +57,20 @@ h3 {
 	float: left;
 	margin-right: 5px;
 }
-
+.clash{
+	width:140px;
+	height:140px;
+	margin: 0 auto;
+	background-image:url("../img/bg_clash.png");
+	background-position: 0px;
+	cursor: pointer;
+}
+.clash:hover{
+	background-position: 280px;	
+}
+.clash:active{
+	background-position: 140px;	
+}
 
 
 
