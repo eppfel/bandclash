@@ -31,7 +31,6 @@
           <a class="btn btn-primary btn-large" id="crawlbtn">Crawl</a>
           <a class="btn btn-primary btn-large ajax" href="#print">Show Data</a>
           <a class="btn btn-primary btn-large" href="./server.php?action=export">Download Triples &raquo;</a>
-          <a class="btn btn-primary btn-large ajax" href="#import">Import Triples</a>
           <a class="btn btn-danger btn-large ajax" href="#reset">Empty DB</a>
         </p>
       </div>

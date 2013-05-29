@@ -66,7 +66,7 @@
             <h3>#</h3>
           </div>
         </div>
-        <div class="allhits row">
+        <div class="allhits row" style="display: none;">
           <div class="bleft span5 txtaright">
             <h3>#</h3>
           </div>
