@@ -84,7 +84,7 @@ class BCAjaxServer extends DBHelper
 
 				case 'import':
 					//query store
-					$this->_store->query("LOAD <http://bandclash/ontology/inferred_test.owl>");
+					$this->_store->query("LOAD <http://bandclash.net/ontology/BandClashTriples-130905-161111.rdf>");
 					if ($errs = $this->_store->getErrors()) {
 						var_dump($errs);
 					}
