@@ -32,9 +32,16 @@ $(document).ready(function(){
 });
 
 function addbands(data){
+  console.log(data);
+  if (!data.length) {
+    $("#results").before("<div class='alert alert-error'>Ooops! Seems like there is no data availible right now. Try reseting the database in the <a href='?p=admin'>Admin Panel</a></div>");
+    console.log('hit it');
+  }
+  else {
    $.each(data, function(i, item) {
       $("<option/>").val(item.uri).text(item.name).appendTo(".selband");
    });
+  }
 }
 
 function updateBand(side, uri)
