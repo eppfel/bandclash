@@ -58,7 +58,7 @@ $p = (isset($_REQUEST['p']) ? $_REQUEST['p'] : 'index');
       <hr>
 
       <footer>
-        <p>&copy; Felix Epp, Thomas Grah &#64; Fachbereich Media &#64; Hochschule Darmstadt 2012</p>
+        <p>&copy; 2013 Felix Epp, Thomas Grah | h_da</p>
       </footer>
 
     </div> <!-- /container -->
